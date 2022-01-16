@@ -35,29 +35,29 @@ class HomeView extends GetView<HomeController> {
 
   final homeController = Get.put<HomeController>(
       HomeController(HomeRepository(apiClient: AppApiClient.getApiClient())));
-
+  final List<Widget> menuList = [
+    const HomeMenuView(
+      icon: 'assets/images/m1.png',
+      title: '现金商城',
+      subTitle: '招牌美食6折起',
+    ),
+    const HomeMenuView(
+      icon: 'assets/images/m2.png',
+      title: '积分商城',
+      subTitle: '招牌美食6折起',
+    ),
+    const HomeMenuView(
+      icon: 'assets/images/m3.png',
+      title: 'BCC商城',
+      subTitle: '招牌美食6折起',
+    )
+  ];
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
       print('主页 state build');
     }
-    List<Widget> menuList = [
-      const HomeMenuView(
-        icon: 'assets/images/m1.png',
-        title: '现金商城',
-        subTitle: '招牌美食6折起',
-      ),
-      const HomeMenuView(
-        icon: 'assets/images/m2.png',
-        title: '积分商城',
-        subTitle: '招牌美食6折起',
-      ),
-      const HomeMenuView(
-        icon: 'assets/images/m3.png',
-        title: 'BCC商城',
-        subTitle: '招牌美食6折起',
-      )
-    ];
+
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,

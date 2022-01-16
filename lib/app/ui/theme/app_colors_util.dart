@@ -28,4 +28,6 @@ class ColorsUtil {
   }
 
   static Color mainColor = const Color.fromRGBO(255, 183, 2, 1);
+
+  static Color navBGColor = Colors.white;
 }

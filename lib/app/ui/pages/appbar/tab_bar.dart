@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +45,7 @@ class TabBarPage extends GetView<TabBarController> {
           backgroundColor: Colors.white,
           color: Colors.black54,
           curveSize: 68.w,
-          height: 50.h,
+          height: max(50.h, 50),
           top: -20.h,
           onTap: (int index) {
             globalStateController.tabCurrentIndex = index;

@@ -26,34 +26,34 @@ class SeaFont {
     return sFontTextStyle(size: 18, color: color);
   }
 
-  static TextStyle s12BoldFontTextStyle({Color? color, bool? bold}) {
+  static TextStyle s12BoldFontTextStyle({Color? color}) {
     return sFontTextStyle(size: 12, color: color, bold: true);
   }
 
-  static TextStyle s13BoldFontTextStyle({Color? color, bool? bold}) {
+  static TextStyle s13BoldFontTextStyle({Color? color}) {
     return sFontTextStyle(size: 13, color: color, bold: true);
   }
 
-  static TextStyle s14BoldFontTextStyle({Color? color, bool? bold}) {
+  static TextStyle s14BoldFontTextStyle({Color? color}) {
     return sFontTextStyle(size: 14, color: color, bold: true);
   }
 
-  static TextStyle s15BoldFontTextStyle({Color? color, bool? bold}) {
+  static TextStyle s15BoldFontTextStyle({Color? color}) {
     return sFontTextStyle(size: 15, color: color, bold: true);
   }
 
-  static TextStyle s16BoldFontTextStyle({Color? color, bool? bold}) {
+  static TextStyle s16BoldFontTextStyle({Color? color}) {
     return sFontTextStyle(size: 16, color: color, bold: true);
   }
 
-  static TextStyle s18BoldFontTextStyle({Color? color, bool? bold}) {
+  static TextStyle s18BoldFontTextStyle({Color? color}) {
     return sFontTextStyle(size: 18, color: color, bold: true);
   }
 
   static TextStyle sFontTextStyle({double? size, Color? color, bool? bold}) {
     return TextStyle(
         fontSize: size?.sp,
-        color: color,
+        color: color ?? Colors.black87,
         fontWeight: bold == null
             ? FontWeight.normal
             : bold

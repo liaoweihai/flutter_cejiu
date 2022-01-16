@@ -7,7 +7,6 @@ import 'package:flutter_soon/app/ui/pages/market/market_line_chart.dart';
 import 'package:flutter_soon/app/ui/pages/market/market_list_item.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class MarketPage extends StatefulWidget {
@@ -53,11 +52,15 @@ Widget marketContentView() {
         // floating: true,
         elevation: 0, //隐藏底部阴影分割线
         expandedHeight: 206.h,
-        title: Text('市场',
-            style: TextStyle(
-                fontSize: 18.sp,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
+        title: SizedBox(
+          // width: 1.sw,
+          child: Text('市场',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 18.sp,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold)),
+        ),
         actions: [
           TextButton.icon(
             onPressed: () {},
