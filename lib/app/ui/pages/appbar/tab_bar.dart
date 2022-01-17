@@ -12,7 +12,7 @@ class TabBarPage extends GetView<TabBarController> {
   TabBarPage({Key? key}) : super(key: key);
 
   //全局状态控制器
-  final globalStateController = Get.find<TabBarController>();
+  // final globalStateController = Get.find<TabBarController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +33,14 @@ class TabBarPage extends GetView<TabBarController> {
     return Scaffold(
       body: PageView.builder(
           physics: const NeverScrollableScrollPhysics(), //禁止页面左右滑动切换
-          controller: globalStateController.pageController,
-          itemCount: globalStateController.widgetOptions.length,
+          controller: controller.pageController,
+          itemCount: controller.widgetOptions.length,
           itemBuilder: (BuildContext context, int index) =>
-              globalStateController.widgetOptions[index]),
+              controller.widgetOptions[index]),
       bottomNavigationBar: ConvexAppBar(
-          key: globalStateController.appBarKey,
-          items: globalStateController.items,
-          initialActiveIndex: globalStateController.tabCurrentIndex,
+          key: controller.appBarKey,
+          items: controller.items,
+          initialActiveIndex: controller.tabCurrentIndex,
           activeColor: Colors.amber[800],
           backgroundColor: Colors.white,
           color: Colors.black54,
@@ -48,7 +48,7 @@ class TabBarPage extends GetView<TabBarController> {
           height: max(50.h, 50),
           top: -20.h,
           onTap: (int index) {
-            globalStateController.tabCurrentIndex = index;
+            controller.tabCurrentIndex = index;
           }),
     );
   }

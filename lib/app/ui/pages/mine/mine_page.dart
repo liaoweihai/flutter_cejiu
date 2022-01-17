@@ -29,8 +29,7 @@ class _MinePageState extends State<MinePage>
 
 class MineView extends GetView<MineController> {
   MineView({Key? key}) : super(key: key);
-  final mineController = Get.put<MineController>(
-      MineController(MineRepository(apiClient: AppApiClient.getApiClient())));
+  final mineController = Get.put<MineController>(MineController());
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {

@@ -15,11 +15,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   // This widget is the root of your application.
+  final bool ifLogin = false;
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.tabBar,
+      initialRoute: ifLogin ? Routes.tabBar : Routes.login,
       getPages: AppPages.pages,
       locale: const Locale('es', 'ZH'),
       translationsKeys: AppTranslation.translations,

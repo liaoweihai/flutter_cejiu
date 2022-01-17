@@ -4,11 +4,11 @@ import 'package:flutter_soon/app/data/repository/tabbar_repository.dart';
 import 'package:flutter_soon/app/ui/pages/home/home_page.dart';
 import 'package:flutter_soon/app/ui/pages/market/market_page.dart';
 import 'package:flutter_soon/app/ui/pages/mine/mine_page.dart';
+import 'package:flutter_soon/app/ui/pages/shopping_cart/shopping_cart_page.dart';
 import 'package:get/get.dart';
 
 class TabBarController extends GetxController {
-  final TabBarRepository repository;
-  TabBarController(this.repository);
+  final TabBarRepository repository = TabBarRepository();
 
   final _tabCurrentIndex = 0.obs;
 
@@ -27,12 +27,14 @@ class TabBarController extends GetxController {
   final items = <TabItem>[
     const TabItem(icon: Icons.home, title: '主页'),
     const TabItem(icon: Icons.article, title: '市场'),
+    const TabItem(icon: Icons.shopping_cart, title: '购物车'),
     const TabItem(icon: Icons.perm_identity, title: '我的'),
   ];
 
   final widgetOptions = <Widget>[
     const HomePage(),
     const MarketPage(),
+    const ShopingCart(),
     const MinePage()
   ];
 

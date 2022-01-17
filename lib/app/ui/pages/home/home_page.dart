@@ -33,8 +33,7 @@ class _HomePageState extends State<HomePage>
 class HomeView extends GetView<HomeController> {
   HomeView({Key? key}) : super(key: key);
 
-  final homeController = Get.put<HomeController>(
-      HomeController(HomeRepository(apiClient: AppApiClient.getApiClient())));
+  final homeController = Get.put<HomeController>(HomeController());
   final List<Widget> menuList = [
     const HomeMenuView(
       icon: 'assets/images/m1.png',

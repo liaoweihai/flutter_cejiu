@@ -3,12 +3,7 @@ import 'package:flutter_soon/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  final HomeRepository repository;
-  HomeController(this.repository);
-
-  // final _obj = ''.obs;
-  // set obj(value) => this._obj.value = value;
-  // get obj => this._obj.value;
+  final HomeRepository repository = HomeRepository();
   getAll() {}
 
   pushShopingDetail(Object shoping) {

@@ -31,8 +31,7 @@ class _MarketPageState extends State<MarketPage>
 class MarketView extends GetView<MarketController> {
   MarketView({Key? key}) : super(key: key);
 
-  final marketController = Get.put<MarketController>(MarketController(
-      MarketRepository(apiClient: AppApiClient.getApiClient())));
+  final marketController = Get.put<MarketController>(MarketController());
 
   @override
   Widget build(BuildContext context) {

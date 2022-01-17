@@ -50,6 +50,10 @@ class SeaFont {
     return sFontTextStyle(size: 18, color: color, bold: true);
   }
 
+  static TextStyle sNavTitleStyle({Color? color}) {
+    return sFontTextStyle(size: 18, color: color, bold: true);
+  }
+
   static TextStyle sFontTextStyle({double? size, Color? color, bool? bold}) {
     return TextStyle(
         fontSize: size?.sp,
