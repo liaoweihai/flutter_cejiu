@@ -42,8 +42,10 @@ dependencies:
   convex_bottom_bar: ^3.0.0
   image_picker: ^0.8.4+4
   fl_chart: ^0.41.0
-  flustars: ^2.0.1
   get: ^4.6.1
+  crypto: ^3.0.1
+  convert: ^3.0.1
+  # connectivity_plus: ^2.2.0
 
 dev_dependencies:
   flutter_test:

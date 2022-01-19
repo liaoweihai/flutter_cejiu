@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soon/app/controller/market/market_controller.dart';
-import 'package:flutter_soon/app/data/provider/api.dart';
-import 'package:flutter_soon/app/data/repository/market_repository.dart';
 import 'package:flutter_soon/app/ui/pages/market/market_line_chart.dart';
 import 'package:flutter_soon/app/ui/pages/market/market_list_item.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';

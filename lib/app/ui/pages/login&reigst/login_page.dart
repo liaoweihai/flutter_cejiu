@@ -3,9 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soon/app/controller/login&reigst/login_regist_controller.dart';
+import 'package:flutter_soon/app/routes/app_pages.dart';
+import 'package:flutter_soon/app/ui/pages/login&reigst/login_field_box.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,6 +18,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    initData();
+    super.initState();
+  }
+
+  void initData() async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    SharedPreferences prefs = await _prefs;
+    String? authorization = prefs.getString('Authorization');
+    if (authorization != null) {
+      // ApiRequest().authorization = authorization;
+      print('获取本地token === $authorization');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ///适配工具初始化
@@ -59,7 +78,10 @@ class LoginView extends GetView<LoginRegistController> {
                   width: 1.sw - 36.w * 2,
                   height: max(44.h, 44),
                   child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // Get.offAllNamed(Routes.tabBar);
+                        Get.find<LoginRegistController>().login();
+                      },
                       child: Text('登录',
                           style: SeaFont.s15FontTextStyle(
                             color: Colors.white,
@@ -96,11 +118,25 @@ class LoginView extends GetView<LoginRegistController> {
                     )),
               ],
             ),
-            loginFieldBox(
-                icon: 'assets/images/shoujihao.png',
-                hintString: '请输手机号码',
-                marginTop: 35),
-            loginFieldBox(icon: 'assets/images/mima.png', hintString: '请输入密码'),
+            Obx(() => LoginFieldBox(
+                  icon: 'assets/images/shoujihao.png',
+                  hintString: '请输手机号码',
+                  marginTop: 35,
+                  value: controller.mobile,
+                  keyboardType: TextInputType.number,
+                  onChanged: (text) {
+                    controller.mobile = text;
+                  },
+                )),
+            Obx(() => LoginFieldBox(
+                  icon: 'assets/images/mima.png',
+                  hintString: '请输入密码',
+                  obscureText: true,
+                  value: controller.password,
+                  onChanged: (text) {
+                    controller.password = text;
+                  },
+                )),
             Container(
                 width: 1.sw - 36.w * 2,
                 height: max(44.h, 44),
@@ -109,47 +145,22 @@ class LoginView extends GetView<LoginRegistController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed(Routes.regist);
+                        },
                         child: Text('立即注册',
                             style: SeaFont.s13FontTextStyle(
                                 color: ColorsUtil.mainColor))),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed(Routes.forgetPassword);
+                        },
                         child: Text(
                           '忘记密码',
                           style: SeaFont.s13FontTextStyle(),
                         ))
                   ],
                 ))
-          ],
-        ));
-  }
-
-  Container loginFieldBox(
-      {String? icon, String? hintString, double? marginTop}) {
-    return Container(
-        margin: EdgeInsets.only(top: marginTop ?? 20),
-        decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(max(44.h, 44) * 0.5)),
-        width: 1.sw - 36.w * 2,
-        height: max(44.h, 44),
-        child: Row(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 10),
-              width: 12.5,
-              height: 15.5,
-              child: Image.asset(icon ?? ''),
-            ),
-            Expanded(
-              child: TextField(
-                // keyboardType: TextInputType.emailAddress,
-                obscureText: true,
-                showCursor: false,
-                decoration: InputDecoration.collapsed(hintText: hintString),
-              ),
-            )
           ],
         ));
   }
