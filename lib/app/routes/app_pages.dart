@@ -1,4 +1,3 @@
-import 'package:flutter_soon/app/bindings/tabbar_binding.dart';
 import 'package:flutter_soon/app/controller/home/shoping_deatil_controller.dart';
 import 'package:flutter_soon/app/controller/login&reigst/login_regist_controller.dart';
 import 'package:flutter_soon/app/controller/tabbar/tabbar_controller.dart';
@@ -19,7 +18,7 @@ class AppPages {
             () => {Get.lazyPut<TabBarController>(() => TabBarController())})),
     GetPage(
         name: Routes.login,
-        page: () => LoginPage(),
+        page: () => const LoginPage(),
         binding: BindingsBuilder(() => {
               Get.lazyPut<LoginRegistController>(() => LoginRegistController())
             })),

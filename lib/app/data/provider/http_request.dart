@@ -3,9 +3,13 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_soon/app/data/provider/api_response.dart';
+import 'package:flutter_soon/app/routes/app_pages.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:crypto/crypto.dart';
 import 'package:convert/convert.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -44,10 +48,8 @@ class ApiRequest {
       ///拦截添加全局头部认证
       // 如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象,如`handler.reject(error)`，
       // 这样请求将被中止并触发异常，上层catchError会被调用。
-      Map<String, dynamic> params = options.data;
-      if (params.isEmpty) {
-        params = options.queryParameters;
-      }
+      dynamic params = options.data;
+      params ??= options.queryParameters;
       options.headers = authorizationHeader(params);
       return handler.next(options); //continue
     }, onResponse: (response, handler) {
@@ -85,38 +87,40 @@ class ApiRequest {
     String sig = getSig(params: params, time: dateStr);
     headers['sign'] = sig;
     headers['time'] = dateStr;
-    headers['Authorization'] = authorization;
+    if (authorization != null) {
+      headers['Authorization'] = authorization;
+    }
 
     return headers;
   }
 
 // GET
-  Future getRequest(
+  Future<ApiResponse> getRequest(
     String path, {
     Map<String, dynamic>? params,
     bool? showLoding,
   }) async {
     try {
       Response response = await _dio.get(path, queryParameters: params);
-      deBugLog(response.data.toString());
-      return response.data;
+      deBugLog('GET请求成功======${response.data.toString()}');
+      return ApiResponse.completed(response.data);
     } catch (e) {
-      deBugLog(e.toString());
+      return ApiResponse.error(e);
     }
   }
 
 // POST
-  Future postRequest(
+  Future<ApiResponse> postRequest(
     String path, {
     Map<String, dynamic>? params,
     bool? showLoding,
   }) async {
     try {
       Response response = await _dio.post(path, data: params);
-      deBugLog(response.data.toString());
-      return response.data;
+      deBugLog('POST求成功======${response.data.toString()}');
+      return ApiResponse.completed(response.data);
     } catch (e) {
-      deBugLog(e.toString());
+      return ApiResponse.error(e);
     }
   }
 }
@@ -175,44 +179,61 @@ String errorEventTipString(DioError error) {
       }
     case DioErrorType.response:
       {
+        String msg = error.response.toString();
+        final responseObj = jsonDecode(msg);
+        String errorMsg = responseObj['msg'] ?? '';
+
+        try {
+          final parameters = error.requestOptions.queryParameters.isNotEmpty
+              ? error.requestOptions.queryParameters
+              : error.requestOptions.data;
+
+          deBugLog('请求参数=====$parameters \n');
+          deBugLog('请求失败=====${responseObj.toString()}');
+        } catch (e) {
+          deBugLog('请求未知错误');
+        }
+
         try {
           int? errCode = error.response!.statusCode;
           switch (errCode) {
             case 400:
               {
-                return "请求语法错误";
+                return errorMsg.isNotEmpty ? errorMsg : "请求语法错误";
               }
             case 401:
               {
-                return "没有权限";
+                // 登录已过期,请重新登录
+                Get.toNamed(Routes.login);
+                return "没有权限" + errorMsg;
               }
             case 403:
               {
-                return "服务器拒绝执行";
+                return "服务器拒绝执行" + errorMsg;
               }
             case 404:
               {
-                return "无法连接服务器";
+                return "无法连接服务器" + errorMsg;
               }
             case 405:
               {
-                return "请求方法被禁止";
+                return "请求方法被禁止" + errorMsg;
               }
             case 500:
               {
-                return "服务器内部错误";
+                return "服务器内部错误" + errorMsg;
               }
             case 502:
               {
-                return "无效的请求";
+                return "无效的请求" + errorMsg;
               }
             case 503:
               {
-                return "服务器挂了";
+                return "服务器挂了" + errorMsg;
               }
             case 505:
               {
-                return "不支持HTTP协议请求";
+                return "不支持HTTP协议请求" + errorMsg;
               }
             default:
               {

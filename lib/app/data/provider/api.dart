@@ -19,8 +19,19 @@ class AppApiClient {
     // print("这里初始化");
   }
 
+  /// 登录
   Future login({Map<String, dynamic>? paramas}) =>
       ApiRequest().postRequest('/login', params: paramas);
+
+  /// 初始化配置
   Future apiDict({Map<String, dynamic>? paramas}) =>
       ApiRequest().getRequest('/dict', params: paramas);
+
+  /// 首页 (轮播图 )
+  Future index({Map<String, dynamic>? paramas}) =>
+      ApiRequest().getRequest('/index', params: paramas);
+
+  /// 商品列表
+  Future goods({Map<String, dynamic>? paramas}) =>
+      ApiRequest().getRequest('/goods', params: paramas);
 }

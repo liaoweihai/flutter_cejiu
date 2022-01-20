@@ -8,7 +8,6 @@ import 'package:flutter_soon/app/ui/pages/login&reigst/login_field_box.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -18,22 +17,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  @override
-  void initState() {
-    initData();
-    super.initState();
-  }
-
-  void initData() async {
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    SharedPreferences prefs = await _prefs;
-    String? authorization = prefs.getString('Authorization');
-    if (authorization != null) {
-      // ApiRequest().authorization = authorization;
-      print('获取本地token === $authorization');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     ///适配工具初始化

@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soon/app/controller/home/home_controller.dart';
+import 'package:flutter_soon/app/data/model/api_dict_model.dart';
 import 'package:flutter_soon/app/data/provider/api.dart';
+import 'package:flutter_soon/app/data/provider/http_request.dart';
 import 'package:flutter_soon/app/data/repository/home_repository.dart';
+import 'package:flutter_soon/app/data/util/public_service.dart';
 import 'package:flutter_soon/app/ui/pages/home/home_menu.dart';
 import 'package:flutter_soon/app/ui/pages/home/home_shoping_view.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
@@ -22,7 +25,6 @@ class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -51,6 +53,7 @@ class HomeView extends GetView<HomeController> {
       subTitle: '招牌美食6折起',
     )
   ];
+
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
@@ -77,15 +80,26 @@ CustomScrollView newCustomScrollView(List<Widget> menuList) {
           child: Column(children: <Widget>[
         SizedBox(
             height: 181.h,
-            child: Swiper(
-              itemBuilder: (BuildContext context, int index) {
-                return Image.asset(
-                  "assets/images/lbt.png",
-                  fit: BoxFit.fill,
+            child: GetBuilder<HomeController>(
+              id: 'swipers',
+              builder: (_) {
+                return Swiper(
+                  itemBuilder: (BuildContext context, int index) {
+                    ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
+                    String imagePrefix = apiDict?.imagePrefix ?? '';
+                    Map swiper = _.swipers[index];
+                    // print(
+                    //     '======${apiDict?.imagePrefix}========${swiper['image']}');
+                    return Image.network(
+                      imagePrefix + swiper['image'],
+                      // "assets/images/lbt.png",
+                      fit: BoxFit.cover,
+                    );
+                  },
+                  itemCount: _.swipers.length,
+                  pagination: const SwiperPagination(),
                 );
               },
-              itemCount: 3,
-              pagination: const SwiperPagination(),
             )),
         Container(
           margin: const EdgeInsets.only(top: 12, bottom: 12),
@@ -96,19 +110,25 @@ CustomScrollView newCustomScrollView(List<Widget> menuList) {
           ),
         )
       ])),
-      SliverGrid(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 169 / 282,
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return OrderView(index, tapCall: () {
-              Get.find<HomeController>().pushShopingDetail(index.toString());
-            });
-          },
-          childCount: 20,
-        ),
+      GetBuilder<HomeController>(
+        id: 'goods',
+        builder: (_) {
+          return SliverGrid(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 169 / 282,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return OrderView(index, model: _.goods[index], tapCall: () {
+                  Get.find<HomeController>()
+                      .pushShopingDetail(index.toString());
+                });
+              },
+              childCount: _.goods.length,
+            ),
+          );
+        },
       ),
     ],
   );

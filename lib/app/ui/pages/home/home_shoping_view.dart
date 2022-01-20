@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_soon/app/data/model/api_dict_model.dart';
+import 'package:flutter_soon/app/data/model/home_goods_model.dart';
+import 'package:flutter_soon/app/data/util/public_service.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
+import 'package:get/get.dart';
 
 class OrderView extends StatefulWidget {
   final int idx;
   final Function? tapCall;
-
-  const OrderView(this.idx, {Key? key, this.tapCall}) : super(key: key);
+  final HomeGoodsModel? model;
+  const OrderView(this.idx, {Key? key, this.tapCall, this.model})
+      : super(key: key);
   @override
   _OrderViewState createState() => _OrderViewState();
 }
@@ -16,7 +21,13 @@ class _OrderViewState extends State<OrderView> {
     double left = 12;
     double right = 12;
 
-    String imgUrlString = 'assets/images/z${widget.idx % 3 + 1}.png';
+    ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
+    String imagePrefix = apiDict?.imagePrefix ?? '';
+    String img = widget.model?.image?.first;
+
+    String imgUrl = imagePrefix + img;
+
+    // String imgUrlString = 'assets/images/z${widget.idx % 3 + 1}.png';
 
     if (widget.idx % 2 == 0) {
       right = 0;
@@ -24,7 +35,7 @@ class _OrderViewState extends State<OrderView> {
     return Container(
       margin: EdgeInsets.only(left: left, right: right, top: 0, bottom: 12),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadiusDirectional.circular(8),
         color: Colors.white,
       ),
       // padding: const EdgeInsets.all(8),
@@ -38,22 +49,24 @@ class _OrderViewState extends State<OrderView> {
             children: [
               SizedBox(
                 height: 200,
-                child: Image(
-                  image: AssetImage(imgUrlString),
-                  fit: BoxFit.fill,
-                ),
+                child: imagePrefix == null
+                    ? const Icon(Icons.no_cell)
+                    : Image.network(imgUrl, fit: BoxFit.cover),
               ),
               Container(
                   padding: const EdgeInsets.all(5),
                   margin: const EdgeInsets.only(bottom: 0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
+                        constraints: const BoxConstraints(minHeight: 30),
                         margin: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: const Text(
-                          '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
+                        child: Text(
+                          widget.model?.name ?? '',
                           maxLines: 2,
-                          style: TextStyle(fontSize: 13, color: Colors.black87),
+                          style: const TextStyle(
+                              fontSize: 13, color: Colors.black87),
                         ),
                       ),
                       Row(
@@ -65,10 +78,10 @@ class _OrderViewState extends State<OrderView> {
                                 color: ColorsUtil.hexColor('#FFB702'),
                                 borderRadius: BorderRadius.circular(5),
                               ),
-                              child: const Text(
-                                '贡献值8.88',
+                              child: Text(
+                                '贡献值${widget.model?.cv}',
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 11,
                                   color: Colors.white,
                                 ),
@@ -79,16 +92,16 @@ class _OrderViewState extends State<OrderView> {
                           margin: const EdgeInsets.only(top: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const <Widget>[
+                            children: <Widget>[
                               Text(
-                                '¥88.88',
+                                '¥${widget.model?.price}',
                                 style: TextStyle(
                                   fontSize: 18,
-                                  color: Colors.red,
+                                  color: Colors.red[600],
                                 ),
                               ),
                               Text(
-                                "销量:  12345",
+                                "销量:  ${widget.model?.sold}",
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: Colors.grey,
