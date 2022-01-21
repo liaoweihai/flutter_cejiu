@@ -1,3 +1,4 @@
+import 'package:flutter_soon/app/controller/base/base_refresh_controller.dart';
 import 'package:flutter_soon/app/data/model/home_goods_model.dart';
 import 'package:flutter_soon/app/data/provider/api.dart';
 import 'package:flutter_soon/app/data/provider/api_response.dart';
@@ -5,22 +6,33 @@ import 'package:flutter_soon/app/data/repository/home_repository.dart';
 import 'package:flutter_soon/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
+class HomeController extends BaseRefreshController {
   final HomeRepository repository = HomeRepository();
 
   List swipers = [];
-  List goods = [];
-  int total = 1;
-  int type = 1;
-  int perPage = 15;
-  int page = 1;
   int status = 1;
+  int type = 1;
+
+  @override
+  get perPage => 10;
 
   @override
   void onInit() {
-    getSwiperIndex();
-    loadGoods();
+    onRefresh();
     super.onInit();
+  }
+
+  @override
+  onRefresh() async {
+    page = 1;
+    await getSwiperIndex();
+    await getGoods();
+  }
+
+  @override
+  onLoading() async {
+    page++;
+    getGoods();
   }
 
   getSwiperIndex() async {
@@ -31,21 +43,20 @@ class HomeController extends GetxController {
     }
   }
 
-  loadGoods() async {
+  getGoods() async {
     ApiResponse response = await AppApiClient()
         .goods(paramas: {'type': type, 'page': page, 'per_page': perPage});
     if (response.status == ApiStatus.apiSuccess) {
       if (page == 1) {
-        goods = [];
-      }
-      if (total >= goods.length) {
-        status = 0;
+        listDataArray = [];
       }
       total = response.modelMap!['total'];
       List list = response.modelMap!['rs'];
-      goods.addAll(list.map((e) => HomeGoodsModel.fromJson(e)));
+      listDataArray.addAll(list.map((e) => HomeGoodsModel.fromJson(e)));
       update(['goods']);
     }
+    isLoading = false;
+    setRefreshState();
   }
 
   pushShopingDetail(Object shoping) {

@@ -1,18 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soon/app/controller/home/home_controller.dart';
 import 'package:flutter_soon/app/data/model/api_dict_model.dart';
-import 'package:flutter_soon/app/data/provider/api.dart';
-import 'package:flutter_soon/app/data/provider/http_request.dart';
-import 'package:flutter_soon/app/data/repository/home_repository.dart';
 import 'package:flutter_soon/app/data/util/public_service.dart';
+import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
 import 'package:flutter_soon/app/ui/pages/home/home_menu.dart';
 import 'package:flutter_soon/app/ui/pages/home/home_shoping_view.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,20 +37,32 @@ class HomeView extends GetView<HomeController> {
 
   final homeController = Get.put<HomeController>(HomeController());
   final List<Widget> menuList = [
-    const HomeMenuView(
+    HomeMenuView(
       icon: 'assets/images/m1.png',
       title: '现金商城',
-      subTitle: '招牌美食6折起',
+      // subTitle: '招牌美食6折起',
+      tapCall: () {
+        Get.find<HomeController>().type = 1;
+        Get.find<HomeController>().onRefresh();
+      },
     ),
-    const HomeMenuView(
+    HomeMenuView(
       icon: 'assets/images/m2.png',
       title: '积分商城',
-      subTitle: '招牌美食6折起',
+      // subTitle: '招牌美食6折起',
+      tapCall: () {
+        Get.find<HomeController>().type = 2;
+        Get.find<HomeController>().onRefresh();
+      },
     ),
-    const HomeMenuView(
+    HomeMenuView(
       icon: 'assets/images/m3.png',
       title: 'BCC商城',
-      subTitle: '招牌美食6折起',
+      // subTitle: '招牌美食6折起',
+      tapCall: () {
+        Get.find<HomeController>().type = 3;
+        Get.find<HomeController>().onRefresh();
+      },
     )
   ];
 
@@ -61,46 +73,32 @@ class HomeView extends GetView<HomeController> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.white,
-        elevation: 0, //隐藏底部阴影分割线
-        title: const HomeBar(),
-      ),
-      backgroundColor: ColorsUtil.hexColor('#f5f5f5'),
-      body: newCustomScrollView(menuList),
-    );
+        appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          backgroundColor: Colors.white,
+          elevation: 0, //隐藏底部阴影分割线
+          title: const HomeBar(),
+        ),
+        backgroundColor: ColorsUtil.hexColor('#f5f5f5'),
+        body: Obx(() => Get.find<HomeController>().isLoading
+            ? Get.find<HomeController>().loadingView
+            : SmartRefresher(
+                enablePullUp: true,
+                controller: homeController.refreshController,
+                child: buildHomeListView(menuList),
+                onRefresh: homeController.onRefresh,
+                onLoading: homeController.onLoading,
+              )));
   }
 }
 
-CustomScrollView newCustomScrollView(List<Widget> menuList) {
+CustomScrollView buildHomeListView(List<Widget> menuList) {
+  print('我攒机了2222222');
   return CustomScrollView(
     slivers: <Widget>[
       SliverToBoxAdapter(
           child: Column(children: <Widget>[
-        SizedBox(
-            height: 181.h,
-            child: GetBuilder<HomeController>(
-              id: 'swipers',
-              builder: (_) {
-                return Swiper(
-                  itemBuilder: (BuildContext context, int index) {
-                    ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
-                    String imagePrefix = apiDict?.imagePrefix ?? '';
-                    Map swiper = _.swipers[index];
-                    // print(
-                    //     '======${apiDict?.imagePrefix}========${swiper['image']}');
-                    return Image.network(
-                      imagePrefix + swiper['image'],
-                      // "assets/images/lbt.png",
-                      fit: BoxFit.cover,
-                    );
-                  },
-                  itemCount: _.swipers.length,
-                  pagination: const SwiperPagination(),
-                );
-              },
-            )),
+        SizedBox(height: 181.h, child: buildSwiper()),
         Container(
           margin: const EdgeInsets.only(top: 12, bottom: 12),
           padding: const EdgeInsets.only(right: 12, left: 12),
@@ -110,27 +108,52 @@ CustomScrollView newCustomScrollView(List<Widget> menuList) {
           ),
         )
       ])),
-      GetBuilder<HomeController>(
-        id: 'goods',
-        builder: (_) {
-          return SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 169 / 282,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return OrderView(index, model: _.goods[index], tapCall: () {
-                  Get.find<HomeController>()
-                      .pushShopingDetail(index.toString());
-                });
-              },
-              childCount: _.goods.length,
-            ),
+      buildGridView(),
+    ],
+  );
+}
+
+GetBuilder<HomeController> buildGridView() {
+  return GetBuilder<HomeController>(
+    id: 'goods',
+    builder: (_) {
+      return SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: _.type == 1 ? 169 / 282 : 169 / 260,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+            return OrderView(index, type: _.type, model: _.listDataArray[index],
+                tapCall: () {
+              Get.find<HomeController>().pushShopingDetail(index.toString());
+            });
+          },
+          childCount: _.listDataArray.length,
+        ),
+      );
+    },
+  );
+}
+
+GetBuilder<HomeController> buildSwiper() {
+  return GetBuilder<HomeController>(
+    id: 'swipers',
+    builder: (_) {
+      return Swiper(
+        key: UniqueKey(),
+        itemBuilder: (BuildContext context, int index) {
+          ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
+          String imagePrefix = apiDict?.imagePrefix ?? '';
+          Map swiper = _.swipers[index];
+          return AppNetworkImage(
+            imageUrl: imagePrefix + swiper['image'],
           );
         },
-      ),
-    ],
+        itemCount: _.swipers.length,
+        pagination: const SwiperPagination(),
+      );
+    },
   );
 }
 

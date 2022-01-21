@@ -5,15 +5,15 @@ import 'package:get/get.dart';
 
 class PublicService extends GetxService {
   ApiDictModel? apiDict;
-  getApiDict() async {
+  Future getApiDict() async {
     ApiResponse response = await AppApiClient().apiDict();
     if (response.status == ApiStatus.apiSuccess) {
       apiDict = ApiDictModel.fromJson(response.modelMap!);
     }
+    return response;
   }
 
   Future<PublicService> init() async {
-    getApiDict();
     return this;
   }
 }

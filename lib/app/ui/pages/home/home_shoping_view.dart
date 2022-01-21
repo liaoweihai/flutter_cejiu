@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_soon/app/data/model/api_dict_model.dart';
 import 'package:flutter_soon/app/data/model/home_goods_model.dart';
 import 'package:flutter_soon/app/data/util/public_service.dart';
+import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +10,9 @@ class OrderView extends StatefulWidget {
   final int idx;
   final Function? tapCall;
   final HomeGoodsModel? model;
-  const OrderView(this.idx, {Key? key, this.tapCall, this.model})
+  final int type;
+  const OrderView(this.idx,
+      {Key? key, required this.type, this.tapCall, this.model})
       : super(key: key);
   @override
   _OrderViewState createState() => _OrderViewState();
@@ -49,9 +52,9 @@ class _OrderViewState extends State<OrderView> {
             children: [
               SizedBox(
                 height: 200,
-                child: imagePrefix == null
-                    ? const Icon(Icons.no_cell)
-                    : Image.network(imgUrl, fit: BoxFit.cover),
+                child: AppNetworkImage(
+                  imageUrl: imgUrl,
+                ),
               ),
               Container(
                   padding: const EdgeInsets.all(5),
@@ -69,34 +72,42 @@ class _OrderViewState extends State<OrderView> {
                               fontSize: 13, color: Colors.black87),
                         ),
                       ),
-                      Row(
-                        children: <Widget>[
-                          Container(
-                              margin: const EdgeInsets.only(bottom: 5),
-                              padding: const EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.hexColor('#FFB702'),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Text(
-                                '贡献值${widget.model?.cv}',
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.white,
-                                ),
-                              )),
-                        ],
-                      ),
+                      widget.type == 1
+                          ? Row(
+                              children: <Widget>[
+                                Container(
+                                    margin: const EdgeInsets.only(bottom: 5),
+                                    padding: const EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      color: ColorsUtil.hexColor('#FFB702'),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Text(
+                                      '贡献值${widget.model?.cv}',
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                              ],
+                            )
+                          : const SizedBox(
+                              height: 0,
+                            ),
                       Container(
                           margin: const EdgeInsets.only(top: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                '¥${widget.model?.price}',
+                                widget.type == 3
+                                    ? 'BCC${widget.model?.bcc}'
+                                    : widget.type == 2
+                                        ? '积分${widget.model?.cv}'
+                                        : '¥${widget.model?.price}',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: widget.type == 1 ? 18 : 14,
                                   color: Colors.red[600],
                                 ),
                               ),

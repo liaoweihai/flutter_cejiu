@@ -123,6 +123,36 @@ class ApiRequest {
       return ApiResponse.error(e);
     }
   }
+
+  // PUT
+  Future<ApiResponse> putRequest(
+    String path, {
+    Map<String, dynamic>? params,
+    bool? showLoding,
+  }) async {
+    try {
+      Response response = await _dio.put(path, data: params);
+      deBugLog('PUT求成功======${response.data.toString()}');
+      return ApiResponse.completed(response.data);
+    } catch (e) {
+      return ApiResponse.error(e);
+    }
+  }
+
+  // Delete
+  Future<ApiResponse> deleteRequest(
+    String path, {
+    Map<String, dynamic>? params,
+    bool? showLoding,
+  }) async {
+    try {
+      Response response = await _dio.delete(path, data: params);
+      deBugLog('Delete求成功======${response.data.toString()}');
+      return ApiResponse.completed(response.data);
+    } catch (e) {
+      return ApiResponse.error(e);
+    }
+  }
 }
 
 // 签名--------------------↓
