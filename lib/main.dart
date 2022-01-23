@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_soon/app/data/provider/http_request.dart';
 import 'package:flutter_soon/app/data/util/public_service.dart';
+import 'package:flutter_soon/app/data/util/strongUtil.dart';
 import 'package:flutter_soon/app/translations/app_translations.dart';
 import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
@@ -42,6 +44,10 @@ class Global {
   //初始化全局信息
   static Future init(VoidCallback callback) async {
     WidgetsFlutterBinding.ensureInitialized();
+
+    await StrongUtil().init();
+    ApiRequest().authorization = StrongUtil().getString('Authorization');
+    print('获取到本地缓存的token === ${ApiRequest().authorization}');
 
     // 全局动态服务
     PublicService service = await PublicService().init();

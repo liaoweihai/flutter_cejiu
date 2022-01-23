@@ -5,6 +5,7 @@ import 'package:flutter_soon/app/controller/mine/mine_controller.dart';
 import 'package:flutter_soon/app/controller/tabbar/tabbar_controller.dart';
 import 'package:flutter_soon/app/data/provider/api.dart';
 import 'package:flutter_soon/app/data/repository/mine_repository.dart';
+import 'package:flutter_soon/app/routes/app_pages.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -98,6 +99,8 @@ ListTile mineListTitle(Map m) {
           print('回到首页');
           final globalStateController = Get.find<TabBarController>();
           globalStateController.tabCurrentIndex = 0;
+        } else if (m['title'] == '帮助中心') {
+          Get.toNamed(Routes.login);
         }
         print(m);
       }

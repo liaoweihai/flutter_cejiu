@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_soon/app/data/model/api_dict_model.dart';
+import 'package:flutter_soon/app/data/util/public_service.dart';
 import 'package:flutter_soon/app/ui/pages/a_common/app_loading.dart';
+import 'package:get/instance_manager.dart';
 
 class AppNetworkImage extends StatelessWidget {
   final String imageUrl;
@@ -11,8 +14,16 @@ class AppNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
+    String imagePrefix = apiDict?.imagePrefix ?? '';
+
+    String imgUrl = imageUrl;
+    if (!imageUrl.contains(imagePrefix)) {
+      imgUrl = imagePrefix + imageUrl;
+    }
+
     return CachedNetworkImage(
-        imageUrl: imageUrl,
+        imageUrl: imgUrl,
         fit: BoxFit.cover,
         placeholder: (context, url) => const AppLoadingView(),
         errorWidget: (context, url, error) => Icon(

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_soon/app/data/model/market_buy_order_list_model.dart';
+import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
 
 class MarketListItem extends StatefulWidget {
-  const MarketListItem({Key? key}) : super(key: key);
+  final MarketBuyOrderListModel model;
+  const MarketListItem(this.model, {Key? key}) : super(key: key);
 
   @override
   _MarketListItemState createState() => _MarketListItemState();
@@ -22,13 +25,19 @@ class _MarketListItemState extends State<MarketListItem> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Icon(
-                Icons.account_circle,
-                size: 40.r,
-              ),
+              Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20.r)),
+                  width: 40.r,
+                  height: 40.r,
+                  child: AppNetworkImage(
+                    imageUrl: widget.model.avatar!,
+                    errorSize: 40.r,
+                  )),
               Container(
                   margin: EdgeInsets.only(left: 10.w),
-                  child: Text('昵称', style: SeaFont.s15FontTextStyle()))
+                  child: Text(widget.model.nickname ?? '',
+                      style: SeaFont.s15FontTextStyle()))
             ],
           ),
           Container(
@@ -41,7 +50,7 @@ class _MarketListItemState extends State<MarketListItem> {
                     const Text('总量'),
                     Container(
                         margin: EdgeInsets.only(top: 5.h),
-                        child: const Text('8.888'))
+                        child: Text(widget.model.totalNum ?? ''))
                   ],
                 ),
                 Column(
@@ -49,7 +58,7 @@ class _MarketListItemState extends State<MarketListItem> {
                     const Text('单价'),
                     Container(
                         margin: EdgeInsets.only(top: 5.h),
-                        child: const Text('8.888'))
+                        child: Text(widget.model.price ?? ''))
                   ],
                 )
               ],
@@ -63,7 +72,7 @@ class _MarketListItemState extends State<MarketListItem> {
                   const Text('剩余'),
                   Container(
                       margin: EdgeInsets.only(top: 5.h),
-                      child: const Text('8.888'))
+                      child: Text(widget.model.surplusNum ?? ''))
                 ],
               ),
               ElevatedButton(

@@ -13,7 +13,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
 
-const apiBaseUrl = 'http://cejiu-api-test.fjlssy.cn';
+const apiBaseUrl = 'http://cejiu-api-test.fjlssy.cn/';
 //测试http://cejiu-api-test.fjlssy.cn 正式http://cejiu-api.fjlssy.cn
 const secret = 'CJ!%37S1'; //测试CJ!%37S1 正式UJ!%3%DN
 

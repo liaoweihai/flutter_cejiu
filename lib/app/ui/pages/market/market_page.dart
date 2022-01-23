@@ -6,6 +6,7 @@ import 'package:flutter_soon/app/ui/pages/market/market_list_item.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MarketPage extends StatefulWidget {
   const MarketPage({Key? key}) : super(key: key);
@@ -34,60 +35,90 @@ class MarketView extends GetView<MarketController> {
   @override
   Widget build(BuildContext context) {
     print('市场 build  了饿了乐乐乐');
-    return Scaffold(body: marketContentView());
+    return Scaffold(
+        body: Obx(() => Get.find<MarketController>().isLoading
+            ? Get.find<MarketController>().loadingView
+            : marketContentView()));
   }
 }
 
 Widget marketContentView() {
   return Container(
     color: Colors.white,
-    child: CustomScrollView(slivers: <Widget>[
-      SliverAppBar(
-        backgroundColor: Colors.transparent,
-        pinned: true,
-        // snap: true,
-        // floating: true,
-        elevation: 0, //隐藏底部阴影分割线
-        expandedHeight: 206.h,
-        title: SizedBox(
-          // width: 1.sw,
-          child: Text('市场',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 18.sp,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold)),
+    child: SmartRefresher(
+      enablePullUp: true,
+      controller: Get.find<MarketController>().refreshController,
+      onRefresh: Get.find<MarketController>().onRefresh,
+      onLoading: Get.find<MarketController>().onLoading,
+      child: CustomScrollView(slivers: <Widget>[
+        SliverAppBar(
+          backgroundColor: Colors.transparent,
+          pinned: true,
+          // snap: true,
+          // floating: true,
+          elevation: 0, //隐藏底部阴影分割线
+          expandedHeight: 206.h,
+          title: SizedBox(
+            // width: 1.sw,
+            child: Text('市场',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold)),
+          ),
+          actions: [
+            TextButton.icon(
+              onPressed: () {},
+              label: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+                size: 15,
+              ),
+              icon: const Text(
+                '资产明细',
+                style: TextStyle(color: Colors.white),
+              ),
+            )
+          ],
+          flexibleSpace: barStack(),
         ),
-        actions: [
-          TextButton.icon(
-            onPressed: () {},
-            label: const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.white,
-              size: 15,
-            ),
-            icon: const Text(
-              '资产明细',
-              style: TextStyle(color: Colors.white),
-            ),
-          )
-        ],
-        flexibleSpace: barStack(),
-      ),
-      SliverToBoxAdapter(
-        child: LineChartSample2(),
-      ),
-      SliverToBoxAdapter(
-        child: marketOrderHeadView(),
-      ),
-      SliverList(
-          delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int index) {
-          return const MarketListItem();
-        },
-        childCount: 10,
-      ))
-    ]),
+        SliverToBoxAdapter(
+          child: GetBuilder<MarketController>(
+            id: 'dailyPrice',
+            builder: (_) {
+              List list = _.marketDailyPriceModel?.list ?? [];
+              list = list.map((e) {
+                String key = e['date_time'];
+                double value = double.parse(e['price'].toString());
+
+                return {'key': key, 'value': value};
+              }).toList();
+              return MarketLineChart(
+                lineDataList: list,
+                change: _.marketDailyPriceModel?.change,
+                price: _.marketDailyPriceModel?.price,
+              );
+            },
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: marketOrderHeadView(),
+        ),
+        GetBuilder<MarketController>(
+          id: 'buyOrderList',
+          builder: (_) {
+            return SliverList(
+                delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return MarketListItem(_.listDataArray[index]);
+              },
+              childCount: _.listDataArray.length,
+            ));
+          },
+        )
+      ]),
+    ),
   );
 }
 
@@ -161,32 +192,37 @@ Stack barStack() {
     Positioned(
       width: 1.sw * 0.5,
       top: 90.h + 25.h + ScreenUtil().statusBarHeight,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
+      child: GetBuilder<MarketController>(
+        id: 'assets',
+        builder: (_) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(bottom: 10.h),
-                child: Text('积分',
-                    style: SeaFont.s14FontTextStyle(color: Colors.white)),
+              Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10.h),
+                    child: Text('积分',
+                        style: SeaFont.s14FontTextStyle(color: Colors.white)),
+                  ),
+                  Text(_.assetsModel?.cv ?? '',
+                      style: SeaFont.s18FontTextStyle(color: Colors.white))
+                ],
               ),
-              Text('888888',
-                  style: SeaFont.s18FontTextStyle(color: Colors.white))
+              Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10.h),
+                    child: Text('BCC',
+                        style: SeaFont.s14FontTextStyle(color: Colors.white)),
+                  ),
+                  Text(_.assetsModel?.bcc ?? '',
+                      style: SeaFont.s18FontTextStyle(color: Colors.white))
+                ],
+              )
             ],
-          ),
-          Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(bottom: 10.h),
-                child: Text('BCC',
-                    style: SeaFont.s14FontTextStyle(color: Colors.white)),
-              ),
-              Text('888888',
-                  style: SeaFont.s18FontTextStyle(color: Colors.white))
-            ],
-          )
-        ],
+          );
+        },
       ),
     )
   ]);
