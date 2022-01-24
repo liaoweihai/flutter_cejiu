@@ -10,11 +10,10 @@ class HomeController extends BaseRefreshController {
   final HomeRepository repository = HomeRepository();
 
   List swipers = [];
-  int status = 1;
   int type = 1;
 
   @override
-  get perPage => 10;
+  get perPage => 3;
 
   @override
   void onInit() {
@@ -25,8 +24,9 @@ class HomeController extends BaseRefreshController {
   @override
   onRefresh() async {
     page = 1;
-    await getSwiperIndex();
+
     await getGoods();
+    await getSwiperIndex();
   }
 
   @override
@@ -39,8 +39,9 @@ class HomeController extends BaseRefreshController {
     ApiResponse response = await AppApiClient().index(paramas: {'type': type});
     if (response.status == ApiStatus.apiSuccess) {
       swipers = response.modelMap!['banner'];
-      update(['swipers']);
+      // update(['swipers']);
     }
+    change('', status: RxStatus.success());
   }
 
   getGoods() async {
@@ -55,7 +56,6 @@ class HomeController extends BaseRefreshController {
       listDataArray.addAll(list.map((e) => HomeGoodsModel.fromJson(e)));
       update(['goods']);
     }
-    isLoading = false;
     setRefreshState();
   }
 

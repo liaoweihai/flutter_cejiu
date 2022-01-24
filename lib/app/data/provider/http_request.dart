@@ -1,14 +1,18 @@
 import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_soon/app/controller/tabbar/tabbar_controller.dart';
 import 'package:flutter_soon/app/data/provider/api_response.dart';
+import 'package:flutter_soon/app/data/util/storage_service.dart';
 import 'package:flutter_soon/app/routes/app_pages.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:crypto/crypto.dart';
 import 'package:convert/convert.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
@@ -22,9 +26,7 @@ class ApiRequest {
   static final ApiRequest _instance = ApiRequest._internal();
   static late final Dio _dio;
 
-  String? _authorization;
-  set authorization(value) => _authorization = value;
-  get authorization => _authorization;
+  ConnectivityResult netStatus = ConnectivityResult.none;
 
   //提供了一个工厂方法来获取该类的实例
   factory ApiRequest() {
@@ -33,6 +35,12 @@ class ApiRequest {
 
   // 通过私有方法_internal()隐藏了构造方法，防止被误创建
   ApiRequest._internal() {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      // Got a new connectivity status!
+      print('ConnectivityResult===================$result ');
+      if (result == ConnectivityResult.none) {}
+    });
+
     // or new Dio with a BaseOptions instance.
     BaseOptions options = BaseOptions(
         baseUrl: apiBaseUrl,
@@ -68,6 +76,17 @@ class ApiRequest {
       // }
       return handler.next(e); //continue
     }));
+
+    // // // 添加retry拦截器
+    // _dio.interceptors.add(
+    //   RetryOnConnectionChangeInterceptor(
+    //     requestRetrier: DioConnectivityRequestRetrier(
+    //       dio: _dio,
+    //       connectivity: Connectivity(),
+    //     ),
+    //   ),
+    // );
+
     if (kDebugMode) {
       _dio.interceptors.add(LogInterceptor(responseBody: false)); //开启请求日志
     }
@@ -87,8 +106,9 @@ class ApiRequest {
     String sig = getSig(params: params, time: dateStr);
     headers['sign'] = sig;
     headers['time'] = dateStr;
-    if (authorization != null) {
-      headers['Authorization'] = authorization;
+
+    if (Get.find<StorageService>().authorization != null) {
+      headers['Authorization'] = Get.find<StorageService>().authorization;
     }
 
     return headers;

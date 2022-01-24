@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,15 +79,26 @@ class HomeView extends GetView<HomeController> {
           title: const HomeBar(),
         ),
         backgroundColor: ColorsUtil.hexColor('#f5f5f5'),
-        body: Obx(() => Get.find<HomeController>().isLoading
-            ? Get.find<HomeController>().loadingView
-            : SmartRefresher(
-                enablePullUp: true,
-                controller: homeController.refreshController,
-                child: buildHomeListView(menuList),
-                onRefresh: homeController.onRefresh,
-                onLoading: homeController.onLoading,
-              )));
+        body: homeController.obx(
+            (state) => SmartRefresher(
+                  enablePullUp: true,
+                  controller: homeController.refreshController,
+                  child: buildHomeListView(menuList),
+                  onRefresh: homeController.onRefresh,
+                  onLoading: homeController.onLoading,
+                ),
+            onLoading: homeController.loadingView));
+
+    //  Obx(() => Get.find<HomeController>().isLoading
+    //     ? Get.find<HomeController>().loadingView
+    //     : SmartRefresher(
+    //         enablePullUp: true,
+    //         controller: homeController.refreshController,
+    //         child: buildHomeListView(menuList),
+    //         onRefresh: homeController.onRefresh,
+    //         onLoading: homeController.onLoading,
+    //       ))
+    // );
   }
 }
 

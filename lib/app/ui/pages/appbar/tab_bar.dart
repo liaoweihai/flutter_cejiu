@@ -38,18 +38,22 @@ class TabBarPage extends GetView<TabBarController> {
           itemBuilder: (BuildContext context, int index) =>
               controller.widgetOptions[index]),
       bottomNavigationBar: ConvexAppBar(
-          key: controller.appBarKey,
-          items: controller.items,
-          initialActiveIndex: controller.tabCurrentIndex,
-          activeColor: Colors.amber[800],
-          backgroundColor: Colors.white,
-          color: Colors.black54,
-          curveSize: 68.w,
-          height: max(50.h, 50),
-          top: -20.h,
-          onTap: (int index) {
-            controller.tabCurrentIndex = index;
-          }),
+        key: controller.appBarKey,
+        items: controller.items,
+        initialActiveIndex: controller.tabCurrentIndex,
+        activeColor: Colors.amber[800],
+        backgroundColor: Colors.white,
+        color: Colors.black54,
+        curveSize: 68.w,
+        height: max(50.h, 50),
+        top: -20.h,
+        onTap: (int index) {
+          controller.tabCurrentIndex = index;
+        },
+        onTabNotify: (i) {
+          return controller.onTabNotify(i);
+        },
+      ),
     );
   }
 }

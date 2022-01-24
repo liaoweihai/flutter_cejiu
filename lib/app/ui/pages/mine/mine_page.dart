@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soon/app/controller/mine/mine_controller.dart';
 import 'package:flutter_soon/app/controller/tabbar/tabbar_controller.dart';
-import 'package:flutter_soon/app/data/provider/api.dart';
-import 'package:flutter_soon/app/data/repository/mine_repository.dart';
+import 'package:flutter_soon/app/data/provider/http_request.dart';
+import 'package:flutter_soon/app/data/util/storage_service.dart';
 import 'package:flutter_soon/app/routes/app_pages.dart';
+import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class MinePage extends StatefulWidget {
@@ -24,59 +24,76 @@ class _MinePageState extends State<MinePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return MineView();
+    return Scaffold(
+      body: MineView(),
+    );
   }
 }
 
 class MineView extends GetView<MineController> {
   MineView({Key? key}) : super(key: key);
   final mineController = Get.put<MineController>(MineController());
+
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
       print('我的 build  了饿了乐乐乐');
     }
-    return MineCustomScrollView();
+    return Obx(() {
+      List<Widget> mineList = [
+        {'title': '实名认证', 'icon': 'mine_1.png', 'pathUrl': ''},
+        {'title': '绑定银行卡', 'icon': 'mine_2.png', 'pathUrl': ''},
+        {'title': '商城订单', 'icon': 'mine_3.png', 'pathUrl': ''},
+        {'title': '会员等级', 'icon': 'mine_4.png', 'pathUrl': ''},
+        {'title': '我的好友', 'icon': 'mine_5.png', 'pathUrl': ''},
+        {'title': 'Bcc转增', 'icon': 'mine_6.png', 'pathUrl': ''},
+        {'title': '我的地址', 'icon': 'mine_7.png', 'pathUrl': ''},
+        {'title': '我的激励', 'icon': 'mine_8.png', 'pathUrl': ''},
+        {'title': '帮助中心', 'icon': 'mine_9.png', 'pathUrl': ''},
+      ].map((e) {
+        return mineListTitle(e);
+      }).toList();
+
+      mineList = ListTile.divideTiles(
+              context: context, tiles: mineList, color: Colors.grey[200])
+          .toList();
+
+      if (Get.find<StorageService>().isLogin) {
+        mineList.add(Container(
+          margin: const EdgeInsets.only(top: 35, left: 40, right: 40),
+          height: 45,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: ColorsUtil.mainColor),
+          child: TextButton(
+            child: Text(
+              '退出登录',
+              style: SeaFont.s15BoldFontTextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              Get.find<StorageService>().outLogin();
+            },
+          ),
+        ));
+      }
+      return mineListView(context, mineList: mineList);
+    });
   }
 }
 
-class MineCustomScrollView extends StatelessWidget {
-  MineCustomScrollView({
-    Key? key,
-  }) : super(key: key);
-
-  final List<ListTile> mineList = [
-    {'title': '实名认证', 'icon': 'mine_1.png', 'pathUrl': ''},
-    {'title': '绑定银行卡', 'icon': 'mine_2.png', 'pathUrl': ''},
-    {'title': '商城订单', 'icon': 'mine_3.png', 'pathUrl': ''},
-    {'title': '会员等级', 'icon': 'mine_4.png', 'pathUrl': ''},
-    {'title': '我的好友', 'icon': 'mine_5.png', 'pathUrl': ''},
-    {'title': 'Bcc转增', 'icon': 'mine_6.png', 'pathUrl': ''},
-    {'title': '我的地址', 'icon': 'mine_7.png', 'pathUrl': ''},
-    {'title': '我的激励', 'icon': 'mine_8.png', 'pathUrl': ''},
-    {'title': '帮助中心', 'icon': 'mine_9.png', 'pathUrl': ''},
-  ].map((e) {
-    return mineListTitle(e);
-  }).toList();
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(slivers: <Widget>[
-      SliverAppBar(
-        backgroundColor: Colors.transparent,
-        pinned: false,
-        // snap: true,
-        // floating: true,
-        elevation: 0, //隐藏底部阴影分割线
-        expandedHeight: 156.h,
-        flexibleSpace: mineBarStack(),
-      ),
-      SliverList(
-          delegate: SliverChildListDelegate(ListTile.divideTiles(
-                  context: context, tiles: mineList, color: Colors.grey[200])
-              .toList()))
-    ]);
-  }
+Widget mineListView(BuildContext context, {required List<Widget> mineList}) {
+  return CustomScrollView(slivers: <Widget>[
+    SliverAppBar(
+      backgroundColor: Colors.transparent,
+      pinned: false,
+      // snap: true,
+      // floating: true,
+      elevation: 0, //隐藏底部阴影分割线
+      expandedHeight: 156.h,
+      flexibleSpace: mineBarStack(),
+    ),
+    SliverList(delegate: SliverChildListDelegate(mineList))
+  ]);
 }
 
 ListTile mineListTitle(Map m) {

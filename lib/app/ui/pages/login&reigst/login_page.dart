@@ -85,12 +85,30 @@ class LoginView extends GetView<LoginRegistController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 22.5.w, top: 77.h),
-                  child: Text(
-                    '登录',
-                    style: TextStyle(fontSize: 25.sp),
-                  ),
+                Stack(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 5.w, top: ScreenUtil().statusBarHeight),
+                      child: TextButton.icon(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.black87,
+                            size: 25,
+                          ),
+                          label: const Text('')),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 35.w, top: 117.h),
+                      child: Text(
+                        '登录',
+                        style: TextStyle(fontSize: 25.sp),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                     width: 114.w,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_soon/app/data/model/api_dict_model.dart';
 import 'package:flutter_soon/app/data/util/public_service.dart';
 import 'package:flutter_soon/app/ui/pages/a_common/app_loading.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 
 class AppNetworkImage extends StatelessWidget {
   final String imageUrl;
@@ -14,22 +14,27 @@ class AppNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
-    String imagePrefix = apiDict?.imagePrefix ?? '';
+    return Obx(() {
+      print('啊啊啊啊啊啊啊啊啊 === 我更新了图片路径');
+      ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
+      if (apiDict == null || apiDict.imagePrefix == null) {
+        Get.find<PublicService>().updateApiDic();
+      }
+      String imagePrefix = apiDict?.imagePrefix ?? '';
 
-    String imgUrl = imageUrl;
-    if (!imageUrl.contains(imagePrefix)) {
-      imgUrl = imagePrefix + imageUrl;
-    }
-
-    return CachedNetworkImage(
-        imageUrl: imgUrl,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => const AppLoadingView(),
-        errorWidget: (context, url, error) => Icon(
-              Icons.broken_image,
-              size: size,
-              color: Colors.grey[300],
-            ));
+      String imgUrl = imageUrl;
+      if (!imageUrl.contains(imagePrefix)) {
+        imgUrl = imagePrefix + imageUrl;
+      }
+      return CachedNetworkImage(
+          imageUrl: imgUrl,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => const AppLoadingView(),
+          errorWidget: (context, url, error) => Icon(
+                Icons.broken_image,
+                size: size,
+                color: Colors.grey[300],
+              ));
+    });
   }
 }

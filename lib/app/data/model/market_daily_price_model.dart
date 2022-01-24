@@ -18,4 +18,12 @@ class MarketDailyPriceModel {
         'price': price,
         'change': change,
       };
+
+  List<dynamic> getLineList() {
+    return list!.map((e) {
+      String key = e['date_time'];
+      double value = double.parse(e['price'].toString());
+      return {'key': key, 'value': value};
+    }).toList();
+  }
 }

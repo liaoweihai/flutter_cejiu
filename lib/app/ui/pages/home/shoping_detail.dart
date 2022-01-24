@@ -5,25 +5,17 @@ import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
 
-class ShopingDetail extends StatefulWidget {
-  const ShopingDetail({Key? key}) : super(key: key);
+class ShopingDetailPage extends StatefulWidget {
+  const ShopingDetailPage({Key? key}) : super(key: key);
 
   @override
   _ShopingDetailState createState() => _ShopingDetailState();
 }
 
-class _ShopingDetailState extends State<ShopingDetail> {
+class _ShopingDetailState extends State<ShopingDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return ShopingDetailPage();
-  }
-}
-
-class ShopingDetailPage extends GetView<ShopingDetailController> {
-  const ShopingDetailPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+    print('详情页面=============context===object$context');
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: SafeArea(
@@ -98,45 +90,54 @@ class ShopingDetailPage extends GetView<ShopingDetailController> {
           ),
         ),
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            // iconTheme: const IconThemeData(color: Colors.black),
-            backgroundColor: Colors.transparent,
-            pinned: true,
-            elevation: 0,
-            // title: Text(
-            //   '香水粉色邂逅柔情淡香',
-            //   style: SeaFont.s15BoldFontTextStyle(),
-            // ),
-            expandedHeight: 250.0,
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.only(bottom: 0),
-              background: SizedBox(
-                width: 1.sw,
-                child: Image.asset(
-                  'assets/images/lake.jpg',
-                  fit: BoxFit.fill,
-                ),
+      body: const ShopingDetailView(),
+    );
+  }
+}
+
+class ShopingDetailView extends GetView<ShopingDetailController> {
+  const ShopingDetailView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar(
+          // iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: Colors.transparent,
+          pinned: true,
+          elevation: 0,
+          // title: Text(
+          //   '香水粉色邂逅柔情淡香',
+          //   style: SeaFont.s15BoldFontTextStyle(),
+          // ),
+          expandedHeight: 250.0,
+          flexibleSpace: FlexibleSpaceBar(
+            titlePadding: const EdgeInsets.only(bottom: 0),
+            background: SizedBox(
+              width: 1.sw,
+              child: Image.asset(
+                'assets/images/lake.jpg',
+                fit: BoxFit.fill,
               ),
             ),
           ),
-          shopingDetailInfo(),
-          addressRuleSelectionView(),
-          SliverList(
-            delegate:
-                SliverChildBuilderDelegate((BuildContext context, int index) {
-              return SizedBox(
-                width: 1.sw,
-                child: Image.asset(
-                  'assets/images/lake.jpg',
-                  fit: BoxFit.fill,
-                ),
-              );
-            }, childCount: 5),
-          ),
-        ],
-      ),
+        ),
+        shopingDetailInfo(),
+        addressRuleSelectionView(),
+        SliverList(
+          delegate:
+              SliverChildBuilderDelegate((BuildContext context, int index) {
+            return SizedBox(
+              width: 1.sw,
+              child: Image.asset(
+                'assets/images/lake.jpg',
+                fit: BoxFit.fill,
+              ),
+            );
+          }, childCount: 5),
+        ),
+      ],
     );
   }
 }

@@ -1,10 +1,6 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soon/app/controller/shopping_cart/shoping_cart_controller.dart';
-import 'package:flutter_soon/app/data/provider/api.dart';
-import 'package:flutter_soon/app/data/repository/shoping_cart_repository.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +14,35 @@ class ShopingCart extends StatefulWidget {
 class _ShopingCartState extends State<ShopingCart> {
   @override
   Widget build(BuildContext context) {
-    return ShopingCartView();
+    return Scaffold(
+      appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          actions: [
+            TextButton(
+                onPressed: () {},
+                child: Text(
+                  '编辑',
+                  style: SeaFont.s13FontTextStyle(),
+                ))
+          ],
+          title: Text(
+            '购物车',
+            style: SeaFont.sNavTitleStyle(),
+          )),
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            TextButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.radio_button_unchecked),
+                label: const Text('全选'))
+          ],
+        ),
+      ),
+      body: ShopingCartView(),
+    );
   }
 }
 
@@ -29,39 +53,12 @@ class ShopingCartView extends GetView<ShopingCartController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.white,
-            actions: [
-              TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    '编辑',
-                    style: SeaFont.s13FontTextStyle(),
-                  ))
-            ],
-            title: Text(
-              '购物车',
-              style: SeaFont.sNavTitleStyle(),
-            )),
-        bottomNavigationBar: Container(
-          color: Colors.white,
-          child: Row(
-            children: <Widget>[
-              TextButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.radio_button_unchecked),
-                  label: const Text('全选'))
-            ],
-          ),
-        ),
-        body: SafeArea(
-            child: ListView.builder(
-                itemCount: 8,
-                itemBuilder: (BuildContext context, int index) {
-                  return shoppingGoodsItem();
-                })));
+    return SafeArea(
+        child: ListView.builder(
+            itemCount: 8,
+            itemBuilder: (BuildContext context, int index) {
+              return shoppingGoodsItem();
+            }));
   }
 
   GestureDetector shoppingGoodsItem() {

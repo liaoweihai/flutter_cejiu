@@ -4,23 +4,55 @@ import 'package:flutter_soon/app/data/model/market_daily_price_model.dart';
 import 'package:flutter_soon/app/data/model/user_assets_model.dart';
 import 'package:flutter_soon/app/data/provider/api.dart';
 import 'package:flutter_soon/app/data/provider/api_response.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 class MarketController extends BaseRefreshController {
   UserAssetsModel? assetsModel;
   MarketDailyPriceModel? marketDailyPriceModel;
 
   @override
+  get perPage => 5;
+
+  @override
   void onInit() {
     onRefresh();
     super.onInit();
+    print('market===onInit');
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    print('market===onReady');
+  }
+
+  @override
+  void onResumed() {
+    print('market===onResumed');
+  }
+
+  @override
+  void onPaused() {
+    print('market===onPaused');
+  }
+
+  @override
+  void onInactive() {
+    print('market===onInactive');
+  }
+
+  @override
+  void onDetached() {
+    print('market===onDetached');
   }
 
   @override
   onRefresh() async {
     page = 1;
+    await marketBuyOrderList();
     await getUserAssets();
     await marketDailyPriceMarketDailyPriceModel();
-    await marketBuyOrderList();
+    change('', status: RxStatus.success());
   }
 
   @override
@@ -50,7 +82,7 @@ class MarketController extends BaseRefreshController {
 
   Future marketBuyOrderList() async {
     ApiResponse response = await AppApiClient()
-        .marketBuyOrderList(paramas: {'page': page, 'perPage': perPage});
+        .marketBuyOrderList(paramas: {'page': page, 'per_page': perPage});
     if (response.status == ApiStatus.apiSuccess) {
       if (page == 1) {
         listDataArray = [];
@@ -62,7 +94,6 @@ class MarketController extends BaseRefreshController {
 
       update(['buyOrderList']);
     }
-    isLoading = false;
     setRefreshState();
 
     return response;

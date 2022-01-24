@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter_soon/app/data/model/api_dict_model.dart';
 import 'package:flutter_soon/app/data/provider/api.dart';
 import 'package:flutter_soon/app/data/provider/api_response.dart';
 import 'package:get/get.dart';
 
 class PublicService extends GetxService {
-  ApiDictModel? apiDict;
+  final _apiDict = ApiDictModel().obs;
+  get apiDict => _apiDict.value;
+  set apiDict(a) => _apiDict.value = a;
 
   Future getApiDict() async {
     ApiResponse response = await AppApiClient().apiDict();
@@ -14,7 +18,46 @@ class PublicService extends GetxService {
     return response;
   }
 
+  Future<ApiDictModel?> updateApiDic() async {
+    await ThrottleUtil.throttle(() {
+      getApiDict();
+    });
+    return apiDict;
+  }
+
   Future<PublicService> init() async {
     return this;
+  }
+}
+
+class ThrottleUtil {
+  static const deFaultDurationTime = 3000;
+  static Timer? timer;
+
+  // 防抖函数
+  static debounce(Function doSomething, {durationTime = deFaultDurationTime}) {
+    timer?.cancel();
+    timer = Timer(Duration(milliseconds: durationTime), () {
+      doSomething();
+      timer = null;
+    });
+  }
+
+  // 节流函数
+  static const String deFaultThrottleId = 'DeFaultThrottleId';
+  static Map<String, int> startTimeMap = {deFaultThrottleId: 0};
+
+  static throttle(Function doSomething,
+      {String throttleId = deFaultThrottleId,
+      durationTime = deFaultDurationTime,
+      Function? continueClick}) {
+    int currentTime = DateTime.now().millisecondsSinceEpoch;
+
+    if (currentTime - (startTimeMap[throttleId] ?? 0) > durationTime) {
+      doSomething();
+      startTimeMap[throttleId] = DateTime.now().millisecondsSinceEpoch;
+    } else {
+      continueClick != null ? continueClick() : null;
+    }
   }
 }
