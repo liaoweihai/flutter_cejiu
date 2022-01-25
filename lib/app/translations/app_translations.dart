@@ -3,7 +3,7 @@ import 'package:flutter_soon/app/translations/es_ZH/es_mx_translations.dart';
 
 abstract class AppTranslation {
   static Map<String, Map<String, String>> translations = {
-    'en_US': enUs,
-    'es_ZH': esZh
+    'en_us': enUs,
+    'es_zh': esZh
   };
 }

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soon/app/controller/market/market_controller.dart';
 import 'package:flutter_soon/app/data/model/market_buy_order_list_model.dart';
+import 'package:flutter_soon/app/ui/pages/a_common/app_smart_refresher.dart';
 import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
 import 'package:flutter_soon/app/ui/pages/market/market_line_chart.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MarketPage extends StatefulWidget {
   const MarketPage({Key? key}) : super(key: key);
@@ -39,6 +39,7 @@ class MarketView extends GetView<MarketController> {
     return marketController.obx(
       (state) => marketContentView(),
       onLoading: marketController.loadingView,
+      onError: (string) => marketController.netWorkView,
     );
   }
 }
@@ -47,7 +48,7 @@ Widget marketContentView() {
   print('市场 build 22222222');
   return Container(
     color: Colors.white,
-    child: SmartRefresher(
+    child: AppRefreshView(
       enablePullUp: true,
       controller: Get.find<MarketController>().refreshController,
       onRefresh: Get.find<MarketController>().onRefresh,
@@ -233,15 +234,12 @@ Padding marketListItem(MarketBuyOrderListModel model) {
       children: <Widget>[
         Row(
           children: <Widget>[
-            Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20.r)),
-                width: 40.r,
-                height: 40.r,
-                child: AppNetworkImage(
-                  imageUrl: model.avatar!,
-                  errorSize: 40.r,
-                )),
+            AppNetworkImage(
+              width: 40.r,
+              height: 40.r,
+              radius: 20.r,
+              imageUrl: model.avatar!,
+            ),
             Container(
                 margin: EdgeInsets.only(left: 10.w),
                 child: Text(model.nickname ?? '',

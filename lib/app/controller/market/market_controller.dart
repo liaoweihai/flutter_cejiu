@@ -4,7 +4,9 @@ import 'package:flutter_soon/app/data/model/market_daily_price_model.dart';
 import 'package:flutter_soon/app/data/model/user_assets_model.dart';
 import 'package:flutter_soon/app/data/provider/api.dart';
 import 'package:flutter_soon/app/data/provider/api_response.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:flutter_soon/app/data/util/app_toast.dart';
+import 'package:flutter_soon/app/data/util/public_service.dart';
+import 'package:get/get.dart';
 
 class MarketController extends BaseRefreshController {
   UserAssetsModel? assetsModel;
@@ -14,8 +16,21 @@ class MarketController extends BaseRefreshController {
   get perPage => 5;
 
   @override
+  errorRefresh() {
+    if (Get.find<PublicService>().ifNoNetWorking) {
+      AppToast.publicToast('请检查网络');
+    } else {
+      onRefresh();
+    }
+  }
+
+  @override
   void onInit() {
-    onRefresh();
+    if (Get.find<PublicService>().ifNoNetWorking) {
+      change('无网络', status: RxStatus.error());
+    } else {
+      onRefresh();
+    }
     super.onInit();
     print('market===onInit');
   }
@@ -52,7 +67,6 @@ class MarketController extends BaseRefreshController {
     await marketBuyOrderList();
     await getUserAssets();
     await marketDailyPriceMarketDailyPriceModel();
-    change('', status: RxStatus.success());
   }
 
   @override
@@ -65,7 +79,7 @@ class MarketController extends BaseRefreshController {
     ApiResponse response = await AppApiClient().marketAssets();
     if (response.status == ApiStatus.apiSuccess) {
       assetsModel = UserAssetsModel.fromJson(response.modelMap!);
-      update(['assets']);
+      // update(['assets']);
     }
     return response;
   }
@@ -75,8 +89,10 @@ class MarketController extends BaseRefreshController {
     if (response.status == ApiStatus.apiSuccess) {
       marketDailyPriceModel =
           MarketDailyPriceModel.fromJson(response.modelMap!);
-      update(['dailyPrice']);
+      // update(['dailyPrice']);
     }
+    change('', status: RxStatus.success());
+
     return response;
   }
 

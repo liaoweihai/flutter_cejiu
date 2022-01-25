@@ -8,8 +8,8 @@ class MarketDailyPriceModel {
   factory MarketDailyPriceModel.fromJson(Map<String, dynamic> json) {
     return MarketDailyPriceModel(
       list: json['list'] as List<dynamic>?,
-      price: json['price'] as String?,
-      change: json['change'] as String?,
+      price: json['price'].toString(),
+      change: json['change'].toString(),
     );
   }
 

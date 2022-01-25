@@ -44,17 +44,17 @@ class _OrderViewState extends State<OrderView> {
       // padding: const EdgeInsets.all(8),
       // width: (size.width - 12 * 3) / 2,
       // height: 282,
-      child: InkWell(
+      child: GestureDetector(
           onTap: () {
             widget.tapCall!();
           },
           child: Column(
             children: [
-              SizedBox(
+              AppNetworkImage(
+                topLeftRadius: 8,
+                topRightRadius: 8,
                 height: 200,
-                child: AppNetworkImage(
-                  imageUrl: imgUrl,
-                ),
+                imageUrl: imgUrl,
               ),
               Container(
                   padding: const EdgeInsets.all(5),

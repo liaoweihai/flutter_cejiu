@@ -5,13 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_soon/app/controller/home/home_controller.dart';
 import 'package:flutter_soon/app/data/model/api_dict_model.dart';
 import 'package:flutter_soon/app/data/util/public_service.dart';
+import 'package:flutter_soon/app/ui/pages/a_common/app_smart_refresher.dart';
 import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
 import 'package:flutter_soon/app/ui/pages/home/home_menu.dart';
 import 'package:flutter_soon/app/ui/pages/home/home_shoping_view.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -80,25 +80,15 @@ class HomeView extends GetView<HomeController> {
         ),
         backgroundColor: ColorsUtil.hexColor('#f5f5f5'),
         body: homeController.obx(
-            (state) => SmartRefresher(
+            (state) => AppRefreshView(
                   enablePullUp: true,
                   controller: homeController.refreshController,
                   child: buildHomeListView(menuList),
                   onRefresh: homeController.onRefresh,
                   onLoading: homeController.onLoading,
                 ),
-            onLoading: homeController.loadingView));
-
-    //  Obx(() => Get.find<HomeController>().isLoading
-    //     ? Get.find<HomeController>().loadingView
-    //     : SmartRefresher(
-    //         enablePullUp: true,
-    //         controller: homeController.refreshController,
-    //         child: buildHomeListView(menuList),
-    //         onRefresh: homeController.onRefresh,
-    //         onLoading: homeController.onLoading,
-    //       ))
-    // );
+            onLoading: homeController.loadingView,
+            onError: (error) => homeController.netWorkView));
   }
 }
 
@@ -108,7 +98,7 @@ CustomScrollView buildHomeListView(List<Widget> menuList) {
     slivers: <Widget>[
       SliverToBoxAdapter(
           child: Column(children: <Widget>[
-        SizedBox(height: 181.h, child: buildSwiper()),
+        SizedBox(height: 220.h, child: buildSwiper()),
         Container(
           margin: const EdgeInsets.only(top: 12, bottom: 12),
           padding: const EdgeInsets.only(right: 12, left: 12),

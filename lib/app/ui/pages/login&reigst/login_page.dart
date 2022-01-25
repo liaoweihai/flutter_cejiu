@@ -20,14 +20,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     ///适配工具初始化
-    ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        context: context,
-        designSize: const Size(375, 957),
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+    // ScreenUtil.init(
+    //     BoxConstraints(
+    //         maxWidth: MediaQuery.of(context).size.width,
+    //         maxHeight: MediaQuery.of(context).size.height),
+    //     context: context,
+    //     designSize: const Size(375, 957),
+    //     minTextAdapt: true,
+    //     orientation: Orientation.portrait);
 
     return const LoginView();
   }

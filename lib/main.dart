@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_soon/app/data/provider/http_request.dart';
 import 'package:flutter_soon/app/data/util/public_service.dart';
 import 'package:flutter_soon/app/data/util/storage_service.dart';
 import 'package:flutter_soon/app/translations/app_translations.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'app/routes/app_pages.dart';
 
 Future<void> main() async {
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.tabBar,
       getPages: AppPages.pages,
-      locale: const Locale('es', 'ZH'),
+      // locale: const Locale('es', 'zh'),
       translationsKeys: AppTranslation.translations,
       defaultTransition: Transition.rightToLeftWithFade,
     );

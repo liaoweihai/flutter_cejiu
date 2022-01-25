@@ -1,8 +1,11 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_soon/app/controller/base/base_refresh_controller.dart';
 import 'package:flutter_soon/app/data/model/home_goods_model.dart';
 import 'package:flutter_soon/app/data/provider/api.dart';
 import 'package:flutter_soon/app/data/provider/api_response.dart';
 import 'package:flutter_soon/app/data/repository/home_repository.dart';
+import 'package:flutter_soon/app/data/util/app_toast.dart';
+import 'package:flutter_soon/app/data/util/public_service.dart';
 import 'package:flutter_soon/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
@@ -13,12 +16,25 @@ class HomeController extends BaseRefreshController {
   int type = 1;
 
   @override
-  get perPage => 3;
+  get perPage => 6;
 
   @override
   void onInit() {
-    onRefresh();
+    if (Get.find<PublicService>().ifNoNetWorking) {
+      change('无网络', status: RxStatus.error());
+    } else {
+      onRefresh();
+    }
     super.onInit();
+  }
+
+  @override
+  errorRefresh() {
+    if (Get.find<PublicService>().ifNoNetWorking) {
+      AppToast.publicToast('请检查网络');
+    } else {
+      onRefresh();
+    }
   }
 
   @override

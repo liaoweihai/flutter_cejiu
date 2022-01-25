@@ -7,13 +7,51 @@ import 'package:get/get.dart';
 
 class AppNetworkImage extends StatelessWidget {
   final String imageUrl;
-  final double? size;
-  const AppNetworkImage({required this.imageUrl, double? errorSize, Key? key})
-      : size = errorSize ?? 100,
-        super(key: key);
+  final double? width;
+  final Color? bgColor;
+  final double? radius;
+  final double? height;
+
+  final double? topLeftRadius;
+  final double? topRightRadius;
+  final double? bottomLeftRadius;
+  final double? bottomRightRadius;
+
+  const AppNetworkImage(
+      {required this.imageUrl,
+      this.bgColor,
+      this.width,
+      this.height,
+      this.radius,
+      this.topLeftRadius,
+      this.topRightRadius,
+      this.bottomLeftRadius,
+      this.bottomRightRadius,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double? br = bottomRightRadius;
+    double? bl = bottomLeftRadius;
+    double? tr = topRightRadius;
+    double? tl = topLeftRadius;
+
+    if (radius != null) {
+      br = radius;
+      bl = radius;
+      tr = radius;
+      tl = radius;
+    }
+
+    BorderRadius? b = BorderRadius.only(
+        bottomRight: br != null ? Radius.circular(br) : Radius.zero,
+        bottomLeft: bl != null ? Radius.circular(bl) : Radius.zero,
+        topLeft: tl != null ? Radius.circular(tl) : Radius.zero,
+        topRight: tr != null ? Radius.circular(tr) : Radius.zero);
+    if (br == null && bl == null && tr == null && tl == null) {
+      b = null;
+    }
     return Obx(() {
       print('啊啊啊啊啊啊啊啊啊 === 我更新了图片路径');
       ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
@@ -28,11 +66,22 @@ class AppNetworkImage extends StatelessWidget {
       }
       return CachedNetworkImage(
           imageUrl: imgUrl,
-          fit: BoxFit.cover,
+          imageBuilder: (context, imageProvider) => Container(
+                width: width,
+                height: height,
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: b,
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
           placeholder: (context, url) => const AppLoadingView(),
           errorWidget: (context, url, error) => Icon(
                 Icons.broken_image,
-                size: size,
+                size: height ?? width,
                 color: Colors.grey[300],
               ));
     });

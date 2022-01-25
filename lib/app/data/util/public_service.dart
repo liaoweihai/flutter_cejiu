@@ -1,14 +1,24 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_soon/app/data/model/api_dict_model.dart';
 import 'package:flutter_soon/app/data/provider/api.dart';
 import 'package:flutter_soon/app/data/provider/api_response.dart';
+import 'package:flutter_soon/app/data/provider/http_request.dart';
 import 'package:get/get.dart';
 
 class PublicService extends GetxService {
   final _apiDict = ApiDictModel().obs;
   get apiDict => _apiDict.value;
   set apiDict(a) => _apiDict.value = a;
+
+  final _netWorkStatus = ConnectivityResult.none.obs;
+  get netWorkStatus => _netWorkStatus.value;
+  set netWorkStatus(a) => _netWorkStatus.value = a;
+
+  final _ifNoNetWorking = true.obs;
+  get ifNoNetWorking => _ifNoNetWorking.value;
+  set ifNoNetWorking(a) => _ifNoNetWorking.value = a;
 
   Future getApiDict() async {
     ApiResponse response = await AppApiClient().apiDict();
@@ -26,6 +36,15 @@ class PublicService extends GetxService {
   }
 
   Future<PublicService> init() async {
+    netWorkStatus = await (Connectivity().checkConnectivity());
+    ifNoNetWorking = (netWorkStatus == ConnectivityResult.none);
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      // Got a new connectivity status!
+      netWorkStatus = result;
+      ifNoNetWorking = (netWorkStatus == ConnectivityResult.none);
+      deBugLog('=============网络状态变化$netWorkStatus');
+    });
+    deBugLog('=============网络状态$netWorkStatus');
     return this;
   }
 }

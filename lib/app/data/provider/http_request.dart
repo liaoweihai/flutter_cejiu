@@ -26,8 +26,6 @@ class ApiRequest {
   static final ApiRequest _instance = ApiRequest._internal();
   static late final Dio _dio;
 
-  ConnectivityResult netStatus = ConnectivityResult.none;
-
   //提供了一个工厂方法来获取该类的实例
   factory ApiRequest() {
     return _instance;
@@ -35,12 +33,6 @@ class ApiRequest {
 
   // 通过私有方法_internal()隐藏了构造方法，防止被误创建
   ApiRequest._internal() {
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      // Got a new connectivity status!
-      print('ConnectivityResult===================$result ');
-      if (result == ConnectivityResult.none) {}
-    });
-
     // or new Dio with a BaseOptions instance.
     BaseOptions options = BaseOptions(
         baseUrl: apiBaseUrl,

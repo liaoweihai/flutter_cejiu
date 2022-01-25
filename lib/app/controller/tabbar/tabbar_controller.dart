@@ -1,6 +1,7 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_soon/app/data/repository/tabbar_repository.dart';
+import 'package:flutter_soon/app/data/util/storage_service.dart';
 import 'package:flutter_soon/app/routes/app_pages.dart';
 import 'package:flutter_soon/app/ui/pages/home/home_page.dart';
 import 'package:flutter_soon/app/ui/pages/market/market_page.dart';
@@ -43,7 +44,8 @@ class TabBarController extends GetxController {
 
   bool onTabNotify(int idx) {
     bool _isGoto = true;
-    if (idx == 1 || idx == 2) {
+
+    if ((idx == 1 || idx == 2) && Get.find<StorageService>().isLogin == false) {
       Get.toNamed(Routes.login);
       _isGoto = false;
     }
