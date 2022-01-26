@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_soon/app/controller/tabbar/tabbar_controller.dart';
 import 'package:flutter_soon/app/data/provider/api_response.dart';
 import 'package:flutter_soon/app/data/util/storage_service.dart';
 import 'package:flutter_soon/app/routes/app_pages.dart';
@@ -158,7 +156,7 @@ class ApiRequest {
     bool? showLoding,
   }) async {
     try {
-      Response response = await _dio.delete(path, data: params);
+      Response response = await _dio.delete(path, queryParameters: params);
       deBugLog('Delete求成功======${response.data.toString()}');
       return ApiResponse.completed(response.data);
     } catch (e) {
@@ -169,14 +167,16 @@ class ApiRequest {
 
 // 签名--------------------↓
 String getSig({Map<String, dynamic>? params, String? time}) {
-  String pStr = params == null ? '' : params.toString();
-  pStr = pStr
-      .replaceAll(':', '=')
-      .replaceAll('{', '')
-      .replaceAll('}', '')
-      .replaceAll(',', '|')
-      .replaceAll(' ', '');
-
+  String pStr = '';
+  if (params != null) {
+    params.forEach((key, value) {
+      pStr = pStr + key + '=' + value.toString() + '|';
+    });
+    if (pStr.isNotEmpty) {
+      pStr = pStr.substring(0, pStr.length - 1);
+    }
+  }
+  deBugLog('=========$pStr');
   return md5ParamsStrSort(pStr, time);
 }
 
@@ -288,7 +288,7 @@ String errorEventTipString(DioError error) {
       }
     default:
       {
-        return error.error.message;
+        return error.error.toString();
       }
   }
 }

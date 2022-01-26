@@ -49,10 +49,7 @@ Widget marketContentView() {
   return Container(
     color: Colors.white,
     child: AppRefreshView(
-      enablePullUp: true,
-      controller: Get.find<MarketController>().refreshController,
-      onRefresh: Get.find<MarketController>().onRefresh,
-      onLoading: Get.find<MarketController>().onLoading,
+      pageController: Get.find<MarketController>(),
       child: CustomScrollView(slivers: <Widget>[
         SliverAppBar(
           backgroundColor: Colors.transparent,

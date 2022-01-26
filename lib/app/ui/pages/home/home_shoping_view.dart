@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_soon/app/data/model/api_dict_model.dart';
 import 'package:flutter_soon/app/data/model/home_goods_model.dart';
-import 'package:flutter_soon/app/data/util/public_service.dart';
 import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
 import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
-import 'package:get/get.dart';
 
-class OrderView extends StatefulWidget {
+class OrderView extends StatelessWidget {
   final int idx;
   final Function? tapCall;
   final HomeGoodsModel? model;
@@ -14,25 +11,12 @@ class OrderView extends StatefulWidget {
   const OrderView(this.idx,
       {Key? key, required this.type, this.tapCall, this.model})
       : super(key: key);
-  @override
-  _OrderViewState createState() => _OrderViewState();
-}
 
-class _OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     double left = 12;
     double right = 12;
-
-    ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
-    String imagePrefix = apiDict?.imagePrefix ?? '';
-    String img = widget.model?.image?.first;
-
-    String imgUrl = imagePrefix + img;
-
-    // String imgUrlString = 'assets/images/z${widget.idx % 3 + 1}.png';
-
-    if (widget.idx % 2 == 0) {
+    if (idx % 2 == 0) {
       right = 0;
     }
     return Container(
@@ -46,7 +30,7 @@ class _OrderViewState extends State<OrderView> {
       // height: 282,
       child: GestureDetector(
           onTap: () {
-            widget.tapCall!();
+            tapCall!();
           },
           child: Column(
             children: [
@@ -54,7 +38,7 @@ class _OrderViewState extends State<OrderView> {
                 topLeftRadius: 8,
                 topRightRadius: 8,
                 height: 200,
-                imageUrl: imgUrl,
+                imageUrl: model?.image?.first,
               ),
               Container(
                   padding: const EdgeInsets.all(5),
@@ -66,13 +50,13 @@ class _OrderViewState extends State<OrderView> {
                         constraints: const BoxConstraints(minHeight: 30),
                         margin: const EdgeInsets.only(top: 10, bottom: 10),
                         child: Text(
-                          widget.model?.name ?? '',
+                          model?.name ?? '',
                           maxLines: 2,
                           style: const TextStyle(
                               fontSize: 13, color: Colors.black87),
                         ),
                       ),
-                      widget.type == 1
+                      type == 1
                           ? Row(
                               children: <Widget>[
                                 Container(
@@ -83,7 +67,7 @@ class _OrderViewState extends State<OrderView> {
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Text(
-                                      '贡献值${widget.model?.cv}',
+                                      '贡献值${model?.cv}',
                                       textAlign: TextAlign.left,
                                       style: const TextStyle(
                                         fontSize: 11,
@@ -101,18 +85,18 @@ class _OrderViewState extends State<OrderView> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                widget.type == 3
-                                    ? 'BCC${widget.model?.bcc}'
-                                    : widget.type == 2
-                                        ? '积分${widget.model?.cv}'
-                                        : '¥${widget.model?.price}',
+                                type == 3
+                                    ? 'BCC${model?.bcc}'
+                                    : type == 2
+                                        ? '积分${model?.cv}'
+                                        : '¥${model?.price}',
                                 style: TextStyle(
-                                  fontSize: widget.type == 1 ? 18 : 14,
+                                  fontSize: type == 1 ? 18 : 14,
                                   color: Colors.red[600],
                                 ),
                               ),
                               Text(
-                                "销量:  ${widget.model?.sold}",
+                                "销量:  ${model?.sold}",
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: Colors.grey,

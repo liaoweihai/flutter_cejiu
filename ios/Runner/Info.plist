@@ -2,6 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>tencentweiboSdkv2</string>
+        <string>weibosdk2.5</string>
+        <string>sinaweibo</string>
+        <string>sinaweibohd</string>
+        <string>alipay</string>
+        <string>safepay</string>
+        <string>cydia</string>
+        <string>weixin</string>
+        <string>weixinULAPI</string>
+        <string>weibosdk</string>
+        <string>mqq</string>
+        <string>mqqapi</string>
+        <string>mqzone</string>
+        <string>wtloginmqq2</string>
+        <string>mqqopensdkapiV3</string>
+        <string>mqqwpa</string>
+        <string>mqqopensdkapiV2</string>
+        <string>mqqOpensdkSSoLogin</string>
+        <string>hbuilder</string>
+        <string>streamapp</string>
+        <string>iosamap</string>
+        <string>baidumap</string>
+    </array>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -12,6 +39,11 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>zh</string>
+		<string>en</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>flutter_soon</string>
 	<key>CFBundlePackageType</key>
@@ -20,6 +52,19 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>alipay</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>cejiu</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>

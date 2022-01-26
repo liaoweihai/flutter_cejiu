@@ -1,4 +1,8 @@
 import 'package:flutter_soon/app/controller/base/base_controller.dart';
+import 'package:flutter_soon/app/data/util/app_toast.dart';
+import 'package:flutter_soon/app/data/util/public_service.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BaseRefreshController extends BaseController {
@@ -11,6 +15,25 @@ class BaseRefreshController extends BaseController {
 
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
+
+  @override
+  errorRefresh() {
+    if (Get.find<PublicService>().ifNoNetWorking) {
+      AppToast.publicToast('请检查网络');
+    } else {
+      onRefresh();
+    }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.find<PublicService>().ifNoNetWorking) {
+      change('无网络', status: RxStatus.error());
+    } else {
+      onRefresh();
+    }
+  }
 
   void onRefresh() async {}
 

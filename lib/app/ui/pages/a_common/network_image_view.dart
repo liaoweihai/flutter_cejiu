@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_soon/app/data/model/api_dict_model.dart';
+import 'package:flutter_soon/app/data/provider/http_request.dart';
 import 'package:flutter_soon/app/data/util/public_service.dart';
 import 'package:flutter_soon/app/ui/pages/a_common/app_loading.dart';
 import 'package:get/get.dart';
@@ -53,7 +54,7 @@ class AppNetworkImage extends StatelessWidget {
       b = null;
     }
     return Obx(() {
-      print('啊啊啊啊啊啊啊啊啊 === 我更新了图片路径');
+      deBugLog('啊啊啊啊啊啊啊啊啊 === 我更新了图片路径');
       ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
       if (apiDict == null || apiDict.imagePrefix == null) {
         Get.find<PublicService>().updateApiDic();

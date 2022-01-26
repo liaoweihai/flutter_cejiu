@@ -16,6 +16,7 @@ class ShopingCartModel {
     this.name,
     this.image,
     this.price,
+    this.ifSele = false,
   });
 
   factory ShopingCartModel.fromJson(Map<String, dynamic> json) {

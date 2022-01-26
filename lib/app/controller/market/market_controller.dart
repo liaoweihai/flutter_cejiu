@@ -4,8 +4,6 @@ import 'package:flutter_soon/app/data/model/market_daily_price_model.dart';
 import 'package:flutter_soon/app/data/model/user_assets_model.dart';
 import 'package:flutter_soon/app/data/provider/api.dart';
 import 'package:flutter_soon/app/data/provider/api_response.dart';
-import 'package:flutter_soon/app/data/util/app_toast.dart';
-import 'package:flutter_soon/app/data/util/public_service.dart';
 import 'package:get/get.dart';
 
 class MarketController extends BaseRefreshController {
@@ -16,21 +14,7 @@ class MarketController extends BaseRefreshController {
   get perPage => 5;
 
   @override
-  errorRefresh() {
-    if (Get.find<PublicService>().ifNoNetWorking) {
-      AppToast.publicToast('请检查网络');
-    } else {
-      onRefresh();
-    }
-  }
-
-  @override
   void onInit() {
-    if (Get.find<PublicService>().ifNoNetWorking) {
-      change('无网络', status: RxStatus.error());
-    } else {
-      onRefresh();
-    }
     super.onInit();
     print('market===onInit');
   }

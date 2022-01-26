@@ -479,7 +479,7 @@ packages:
     source: hosted
     version: "2.0.0"
   rxdart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: rxdart
       url: "https://pub.flutter-io.cn"
@@ -609,6 +609,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.4.3"
+  tobias:
+    dependency: "direct main"
+    description:
+      name: tobias
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.0"
   typed_data:
     dependency: transitive
     description:

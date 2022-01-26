@@ -81,11 +81,8 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: ColorsUtil.hexColor('#f5f5f5'),
         body: homeController.obx(
             (state) => AppRefreshView(
-                  enablePullUp: true,
-                  controller: homeController.refreshController,
+                  pageController: homeController,
                   child: buildHomeListView(menuList),
-                  onRefresh: homeController.onRefresh,
-                  onLoading: homeController.onLoading,
                 ),
             onLoading: homeController.loadingView,
             onError: (error) => homeController.netWorkView));
