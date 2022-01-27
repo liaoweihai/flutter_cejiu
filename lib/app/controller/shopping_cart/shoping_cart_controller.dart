@@ -1,10 +1,10 @@
 import 'package:decimal/decimal.dart';
-import 'package:flutter_soon/app/controller/base/base_refresh_controller.dart';
-import 'package:flutter_soon/app/data/model/shoping_cart_model.dart';
-import 'package:flutter_soon/app/data/provider/api.dart';
-import 'package:flutter_soon/app/data/provider/api_response.dart';
-import 'package:flutter_soon/app/data/repository/shoping_cart_repository.dart';
-import 'package:flutter_soon/app/data/util/app_toast.dart';
+import 'package:flutter_cejiu/app/controller/base/base_refresh_controller.dart';
+import 'package:flutter_cejiu/app/data/model/shoping_cart_model.dart';
+import 'package:flutter_cejiu/app/data/provider/api.dart';
+import 'package:flutter_cejiu/app/data/provider/api_response.dart';
+import 'package:flutter_cejiu/app/data/repository/shoping_cart_repository.dart';
+import 'package:flutter_cejiu/app/data/util/app_toast.dart';
 import 'package:get/get.dart';
 import 'package:tobias/tobias.dart' as tobias;
 

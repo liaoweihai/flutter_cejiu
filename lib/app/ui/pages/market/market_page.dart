@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/controller/market/market_controller.dart';
-import 'package:flutter_soon/app/data/model/market_buy_order_list_model.dart';
-import 'package:flutter_soon/app/ui/pages/a_common/app_smart_refresher.dart';
-import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
-import 'package:flutter_soon/app/ui/pages/market/market_line_chart.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
-import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
+import 'package:flutter_cejiu/app/controller/market/market_controller.dart';
+import 'package:flutter_cejiu/app/data/model/market_buy_order_list_model.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/app_smart_refresher.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/network_image_view.dart';
+import 'package:flutter_cejiu/app/ui/pages/market/market_line_chart.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
 
 class MarketPage extends StatefulWidget {
@@ -38,8 +38,8 @@ class MarketView extends GetView<MarketController> {
     print('市场 build  了饿了乐乐乐');
     return marketController.obx(
       (state) => marketContentView(),
-      onLoading: marketController.loadingView,
-      onError: (string) => marketController.netWorkView,
+      onLoading: marketController.loadingView(),
+      onError: (string) => marketController.netWorkView(),
     );
   }
 }

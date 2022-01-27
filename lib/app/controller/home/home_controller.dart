@@ -1,9 +1,9 @@
-import 'package:flutter_soon/app/controller/base/base_refresh_controller.dart';
-import 'package:flutter_soon/app/data/model/home_goods_model.dart';
-import 'package:flutter_soon/app/data/provider/api.dart';
-import 'package:flutter_soon/app/data/provider/api_response.dart';
-import 'package:flutter_soon/app/data/repository/home_repository.dart';
-import 'package:flutter_soon/app/routes/app_pages.dart';
+import 'package:flutter_cejiu/app/controller/base/base_refresh_controller.dart';
+import 'package:flutter_cejiu/app/data/model/home_goods_model.dart';
+import 'package:flutter_cejiu/app/data/provider/api.dart';
+import 'package:flutter_cejiu/app/data/provider/api_response.dart';
+import 'package:flutter_cejiu/app/data/repository/home_repository.dart';
+import 'package:flutter_cejiu/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class HomeController extends BaseRefreshController {
@@ -58,7 +58,7 @@ class HomeController extends BaseRefreshController {
     setRefreshState();
   }
 
-  pushShopingDetail(Object shoping) {
-    Get.toNamed(Routes.shopingDetail);
+  pushShopingDetail(String shopingId) {
+    Get.toNamed(Routes.shopingDetail, arguments: shopingId);
   }
 }

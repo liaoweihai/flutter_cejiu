@@ -3,11 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_cejiu/app/ui/theme/app_text_util.dart';
 
-class ErrorNetWorkView extends StatelessWidget {
+class ErrorRequestView extends StatelessWidget {
   final double? size;
-
+  final String? errorMsg;
   final Function refresh;
-  const ErrorNetWorkView({required this.refresh, double? errorSize, Key? key})
+  const ErrorRequestView(
+      {required this.refresh, this.errorMsg, double? errorSize, Key? key})
       : size = errorSize ?? 100,
         super(key: key);
 
@@ -21,7 +22,7 @@ class ErrorNetWorkView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Icon(
-            Icons.wifi_off,
+            Icons.error,
             size: 120.r,
             color: ColorsUtil.mainColor,
           ),
@@ -29,7 +30,7 @@ class ErrorNetWorkView extends StatelessWidget {
             height: 15,
           ),
           Text(
-            '网络连接错误',
+            errorMsg ?? '请求错误了,刷新重试',
             style: SeaFont.s14FontTextStyle(color: Colors.grey),
           ),
           const SizedBox(

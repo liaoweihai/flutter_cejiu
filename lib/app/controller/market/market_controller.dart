@@ -1,9 +1,9 @@
-import 'package:flutter_soon/app/controller/base/base_refresh_controller.dart';
-import 'package:flutter_soon/app/data/model/market_buy_order_list_model.dart';
-import 'package:flutter_soon/app/data/model/market_daily_price_model.dart';
-import 'package:flutter_soon/app/data/model/user_assets_model.dart';
-import 'package:flutter_soon/app/data/provider/api.dart';
-import 'package:flutter_soon/app/data/provider/api_response.dart';
+import 'package:flutter_cejiu/app/controller/base/base_refresh_controller.dart';
+import 'package:flutter_cejiu/app/data/model/market_buy_order_list_model.dart';
+import 'package:flutter_cejiu/app/data/model/market_daily_price_model.dart';
+import 'package:flutter_cejiu/app/data/model/user_assets_model.dart';
+import 'package:flutter_cejiu/app/data/provider/api.dart';
+import 'package:flutter_cejiu/app/data/provider/api_response.dart';
 import 'package:get/get.dart';
 
 class MarketController extends BaseRefreshController {

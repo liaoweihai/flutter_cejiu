@@ -1,144 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cejiu/app/controller/shopping_cart/shoping_cart_controller.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/app_smart_refresher.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/network_image_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/controller/home/shoping_deatil_controller.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
-import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
+import 'package:flutter_cejiu/app/controller/home/shoping_deatil_controller.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
 
-class ShopingDetailPage extends StatefulWidget {
+class ShopingDetailPage extends GetView<ShopingDetailController> {
   const ShopingDetailPage({Key? key}) : super(key: key);
 
   @override
-  _ShopingDetailState createState() => _ShopingDetailState();
-}
-
-class _ShopingDetailState extends State<ShopingDetailPage> {
-  @override
   Widget build(BuildContext context) {
-    print('详情页面=============context===object$context');
-    return Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          color: Colors.white,
-          width: 1.sw,
-          height: 56.h,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Icon(
-                    Icons.store,
-                    color: Colors.grey,
-                    size: 20,
-                  ),
-                  Text(
-                    '商城',
-                    style: SeaFont.s12FontTextStyle(),
-                  )
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Icon(
-                    Icons.shopping_cart,
-                    color: Colors.grey,
-                    size: 20,
-                  ),
-                  Text(
-                    '购物车',
-                    style: SeaFont.s12FontTextStyle(),
-                  )
-                ],
-              ),
-              OutlinedButton(
-                onPressed: () {},
-                child: Text('发起团购',
-                    style: SeaFont.s14FontTextStyle(
-                      color: ColorsUtil.mainColor,
-                    )),
-                style: ButtonStyle(
-                    side: MaterialStateProperty.all(
-                        BorderSide(color: ColorsUtil.mainColor))),
-              ),
-              OutlinedButton(
-                onPressed: () {},
-                child: Text('加入购物车',
-                    style: SeaFont.s14FontTextStyle(
-                      color: ColorsUtil.mainColor,
-                    )),
-                style: ButtonStyle(
-                    side: MaterialStateProperty.all(
-                        BorderSide(color: ColorsUtil.mainColor))),
-              ),
-              OutlinedButton(
-                  onPressed: () {},
-                  child: Text('立即购买',
-                      style: SeaFont.s14FontTextStyle(
-                        color: Colors.white,
-                      )),
-                  style: ButtonStyle(
-                      side: MaterialStateProperty.all(
-                          BorderSide(color: ColorsUtil.mainColor)),
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (states) => ColorsUtil.mainColor))),
-            ],
-          ),
-        ),
-      ),
-      body: const ShopingDetailView(),
-    );
-  }
-}
-
-class ShopingDetailView extends GetView<ShopingDetailController> {
-  const ShopingDetailView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-          // iconTheme: const IconThemeData(color: Colors.black),
-          backgroundColor: Colors.transparent,
-          pinned: true,
-          elevation: 0,
-          // title: Text(
-          //   '香水粉色邂逅柔情淡香',
-          //   style: SeaFont.s15BoldFontTextStyle(),
-          // ),
-          expandedHeight: 250.0,
-          flexibleSpace: FlexibleSpaceBar(
-            titlePadding: const EdgeInsets.only(bottom: 0),
-            background: SizedBox(
-              width: 1.sw,
-              child: Image.asset(
-                'assets/images/lake.jpg',
-                fit: BoxFit.fill,
+    return controller.obx(
+        (state) => Scaffold(
+              backgroundColor: Colors.white,
+              bottomNavigationBar: bottomNavBar(),
+              body: AppRefreshView(
+                enablePullUp: false,
+                pageController: controller,
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      // iconTheme: const IconThemeData(color: Colors.black),
+                      backgroundColor: Colors.transparent,
+                      foregroundColor: Colors.grey[400],
+                      pinned: true,
+                      elevation: 0,
+                      // title: Text(
+                      //   '香水粉色邂逅柔情淡香',
+                      //   style: SeaFont.s15BoldFontTextStyle(),
+                      // ),
+                      expandedHeight: 250.0,
+                      flexibleSpace: FlexibleSpaceBar(
+                        titlePadding: const EdgeInsets.only(bottom: 0),
+                        background: SizedBox(
+                          width: 1.sw,
+                          child: AppNetworkImage(
+                              imageUrl: controller.detialModel!.image!.first),
+                        ),
+                      ),
+                    ),
+                    shopingDetailInfo(),
+                    addressRuleSelectionView(),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                        return SizedBox(
+                          width: 1.sw,
+                          height: 250.h,
+                          child: AppNetworkImage(
+                              imageUrl: controller.detialModel!.image![index]),
+                        );
+                      }, childCount: controller.detialModel!.image!.length),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
-        shopingDetailInfo(),
-        addressRuleSelectionView(),
-        SliverList(
-          delegate:
-              SliverChildBuilderDelegate((BuildContext context, int index) {
-            return SizedBox(
-              width: 1.sw,
-              child: Image.asset(
-                'assets/images/lake.jpg',
-                fit: BoxFit.fill,
-              ),
-            );
-          }, childCount: 5),
-        ),
-      ],
-    );
+        onLoading: controller.loadingView(), onError: (error) {
+      print('hfajshjhfgajsh====我错误了===$error');
+      return error == null
+          ? controller.netWorkView(ifScaffold: true)
+          : controller.loadErrorView(errorMsg: error, ifScaffold: true);
+    });
   }
 }
 
@@ -201,17 +127,21 @@ Widget addressRuleSelectionView() {
 }
 
 Widget shopingDetailInfo() {
+  ShopingDetailController controller = Get.find<ShopingDetailController>();
+
   return SliverToBoxAdapter(
     child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('香水粉色邂逅柔情淡香', style: SeaFont.s18BoldFontTextStyle()),
+          Text(controller.detialModel?.name ?? '',
+              style: SeaFont.s18BoldFontTextStyle()),
           const SizedBox(
             height: 5,
           ),
-          Text('贡献值: 8.88', style: SeaFont.s13FontTextStyle()),
+          Text('贡献值: ${controller.detialModel?.cv ?? ''}',
+              style: SeaFont.s13FontTextStyle()),
           const SizedBox(
             height: 5,
           ),
@@ -225,11 +155,86 @@ Widget shopingDetailInfo() {
                 width: 5,
               ),
               Text(
-                '88.88',
+                controller.detialModel?.bcc ?? '',
                 style: SeaFont.s16FontTextStyle(color: Colors.redAccent),
               )
             ],
           )
+        ],
+      ),
+    ),
+  );
+}
+
+SafeArea bottomNavBar() {
+  return SafeArea(
+    child: Container(
+      color: Colors.white,
+      width: 1.sw,
+      height: 56.h,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Icon(
+                Icons.store,
+                color: Colors.grey,
+                size: 20,
+              ),
+              Text(
+                '商城',
+                style: SeaFont.s12FontTextStyle(),
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Icon(
+                Icons.shopping_cart,
+                color: Colors.grey,
+                size: 20,
+              ),
+              Text(
+                '购物车',
+                style: SeaFont.s12FontTextStyle(),
+              )
+            ],
+          ),
+          OutlinedButton(
+            onPressed: () {},
+            child: Text('发起团购',
+                style: SeaFont.s14FontTextStyle(
+                  color: ColorsUtil.mainColor,
+                )),
+            style: ButtonStyle(
+                side: MaterialStateProperty.all(
+                    BorderSide(color: ColorsUtil.mainColor))),
+          ),
+          OutlinedButton(
+            onPressed: () {},
+            child: Text('加入购物车',
+                style: SeaFont.s14FontTextStyle(
+                  color: ColorsUtil.mainColor,
+                )),
+            style: ButtonStyle(
+                side: MaterialStateProperty.all(
+                    BorderSide(color: ColorsUtil.mainColor))),
+          ),
+          OutlinedButton(
+              onPressed: () {},
+              child: Text('立即购买',
+                  style: SeaFont.s14FontTextStyle(
+                    color: Colors.white,
+                  )),
+              style: ButtonStyle(
+                  side: MaterialStateProperty.all(
+                      BorderSide(color: ColorsUtil.mainColor)),
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => ColorsUtil.mainColor))),
         ],
       ),
     ),

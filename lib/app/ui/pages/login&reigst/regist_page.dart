@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/controller/login&reigst/login_regist_controller.dart';
-import 'package:flutter_soon/app/routes/app_pages.dart';
-import 'package:flutter_soon/app/ui/pages/login&reigst/login_field_box.dart';
-import 'package:flutter_soon/app/ui/pages/login&reigst/timer_button.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
-import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
+import 'package:flutter_cejiu/app/controller/login&reigst/login_regist_controller.dart';
+import 'package:flutter_cejiu/app/routes/app_pages.dart';
+import 'package:flutter_cejiu/app/ui/pages/login&reigst/login_field_box.dart';
+import 'package:flutter_cejiu/app/ui/pages/login&reigst/timer_button.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
 
 class RegistPage extends StatefulWidget {

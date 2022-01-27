@@ -5,10 +5,6 @@ import 'dart:ffi';
 class ApiError {
   final Object? error;
 
-  late final String? _errorMsg;
-  get errorMsg => error?.toString();
-  set errorMsg(msg) => _errorMsg = msg;
-
   ApiError({this.error});
 }
 
@@ -43,7 +39,7 @@ class ApiResponse<T> {
 
   @override
   String toString() {
-    return "Status : $status \n Message : ${apiError?.errorMsg} \n Data : $data";
+    return "Status : $status \n Message : ${apiError?.error} \n Data : $data";
   }
 }
 

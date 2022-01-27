@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter_soon/app/data/model/api_dict_model.dart';
-import 'package:flutter_soon/app/data/provider/api.dart';
-import 'package:flutter_soon/app/data/provider/api_response.dart';
-import 'package:flutter_soon/app/data/provider/http_request.dart';
+import 'package:flutter_cejiu/app/data/model/api_dict_model.dart';
+import 'package:flutter_cejiu/app/data/provider/api.dart';
+import 'package:flutter_cejiu/app/data/provider/api_response.dart';
+import 'package:flutter_cejiu/app/data/provider/http_request.dart';
 import 'package:get/get.dart';
 
 class PublicService extends GetxService {

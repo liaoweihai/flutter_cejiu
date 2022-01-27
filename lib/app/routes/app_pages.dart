@@ -1,11 +1,11 @@
-import 'package:flutter_soon/app/controller/home/shoping_deatil_controller.dart';
-import 'package:flutter_soon/app/controller/login&reigst/login_regist_controller.dart';
-import 'package:flutter_soon/app/controller/tabbar/tabbar_controller.dart';
-import 'package:flutter_soon/app/ui/pages/appbar/tab_bar.dart';
-import 'package:flutter_soon/app/ui/pages/home/shoping_detail.dart';
-import 'package:flutter_soon/app/ui/pages/login&reigst/forget-password.dart';
-import 'package:flutter_soon/app/ui/pages/login&reigst/login_page.dart';
-import 'package:flutter_soon/app/ui/pages/login&reigst/regist_page.dart';
+import 'package:flutter_cejiu/app/controller/home/shoping_deatil_controller.dart';
+import 'package:flutter_cejiu/app/controller/login&reigst/login_regist_controller.dart';
+import 'package:flutter_cejiu/app/controller/tabbar/tabbar_controller.dart';
+import 'package:flutter_cejiu/app/ui/pages/appbar/tab_bar.dart';
+import 'package:flutter_cejiu/app/ui/pages/home/shoping_detail.dart';
+import 'package:flutter_cejiu/app/ui/pages/login&reigst/forget-password.dart';
+import 'package:flutter_cejiu/app/ui/pages/login&reigst/login_page.dart';
+import 'package:flutter_cejiu/app/ui/pages/login&reigst/regist_page.dart';
 import 'package:get/get.dart';
 part './app_routes.dart';
 

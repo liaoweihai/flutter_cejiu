@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/ui/pages/login&reigst/timer_button.dart';
+import 'package:flutter_cejiu/app/ui/pages/login&reigst/timer_button.dart';
 
 class LoginFieldBox extends StatefulWidget {
   final String? icon;

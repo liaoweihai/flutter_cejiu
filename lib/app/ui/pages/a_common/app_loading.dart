@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AppLoadingView extends StatelessWidget {

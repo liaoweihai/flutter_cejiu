@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_soon/app/data/provider/api_response.dart';
-import 'package:flutter_soon/app/data/util/storage_service.dart';
-import 'package:flutter_soon/app/routes/app_pages.dart';
+import 'package:flutter_cejiu/app/data/provider/api_response.dart';
+import 'package:flutter_cejiu/app/data/util/storage_service.dart';
+import 'package:flutter_cejiu/app/routes/app_pages.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:crypto/crypto.dart';
 import 'package:convert/convert.dart';
@@ -115,7 +115,7 @@ class ApiRequest {
       deBugLog('GET请求成功======${response.data.toString()}');
       return ApiResponse.completed(response.data);
     } catch (e) {
-      return ApiResponse.error(e);
+      return ApiResponse.error(errorEventTipString(e as DioError));
     }
   }
 
@@ -130,7 +130,7 @@ class ApiRequest {
       deBugLog('POST求成功======${response.data.toString()}');
       return ApiResponse.completed(response.data);
     } catch (e) {
-      return ApiResponse.error(e);
+      return ApiResponse.error(errorEventTipString(e as DioError));
     }
   }
 
@@ -145,7 +145,7 @@ class ApiRequest {
       deBugLog('PUT求成功======${response.data.toString()}');
       return ApiResponse.completed(response.data);
     } catch (e) {
-      return ApiResponse.error(e);
+      return ApiResponse.error(errorEventTipString(e as DioError));
     }
   }
 
@@ -160,7 +160,7 @@ class ApiRequest {
       deBugLog('Delete求成功======${response.data.toString()}');
       return ApiResponse.completed(response.data);
     } catch (e) {
-      return ApiResponse.error(e);
+      return ApiResponse.error(errorEventTipString(e as DioError));
     }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:flutter_soon/app/controller/home/home_controller.dart';
+import 'package:flutter_cejiu/app/controller/home/home_controller.dart';
 import 'package:get/get.dart';
 
 class HomeMenuView extends GetView<HomeController> {

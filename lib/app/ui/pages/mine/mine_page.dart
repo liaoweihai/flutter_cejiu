@@ -1,41 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/app_smart_refresher.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/network_image_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/controller/mine/mine_controller.dart';
-import 'package:flutter_soon/app/controller/tabbar/tabbar_controller.dart';
-import 'package:flutter_soon/app/data/provider/http_request.dart';
-import 'package:flutter_soon/app/data/util/storage_service.dart';
-import 'package:flutter_soon/app/routes/app_pages.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
-import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
+import 'package:flutter_cejiu/app/controller/mine/mine_controller.dart';
+import 'package:flutter_cejiu/app/controller/tabbar/tabbar_controller.dart';
+import 'package:flutter_cejiu/app/data/util/storage_service.dart';
+import 'package:flutter_cejiu/app/routes/app_pages.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
 
-class MinePage extends StatefulWidget {
+class MinePage extends GetView<MineController> {
   const MinePage({Key? key}) : super(key: key);
 
   @override
-  _MinePageState createState() => _MinePageState();
-}
-
-class _MinePageState extends State<MinePage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return Scaffold(
-      body: MineView(),
-    );
-  }
-}
+    Get.put<MineController>(MineController());
 
-class MineView extends GetView<MineController> {
-  MineView({Key? key}) : super(key: key);
-  final mineController = Get.put<MineController>(MineController());
-
-  @override
-  Widget build(BuildContext context) {
     if (kDebugMode) {
       print('我的 build  了饿了乐乐乐');
     }
@@ -58,6 +40,8 @@ class MineView extends GetView<MineController> {
               context: context, tiles: mineList, color: Colors.grey[200])
           .toList();
 
+      mineList.insert(0, mineBarStack());
+
       if (Get.find<StorageService>().isLogin) {
         mineList.add(Container(
           margin: const EdgeInsets.only(top: 35, left: 40, right: 40),
@@ -72,6 +56,7 @@ class MineView extends GetView<MineController> {
             ),
             onPressed: () {
               Get.find<StorageService>().outLogin();
+              Get.find<TabBarController>().tabCurrentIndex = 0;
             },
           ),
         ));
@@ -82,18 +67,18 @@ class MineView extends GetView<MineController> {
 }
 
 Widget mineListView(BuildContext context, {required List<Widget> mineList}) {
-  return CustomScrollView(slivers: <Widget>[
-    SliverAppBar(
-      backgroundColor: Colors.transparent,
-      pinned: false,
-      // snap: true,
-      // floating: true,
-      elevation: 0, //隐藏底部阴影分割线
-      expandedHeight: 156.h,
-      flexibleSpace: mineBarStack(),
-    ),
-    SliverList(delegate: SliverChildListDelegate(mineList))
-  ]);
+  return Scaffold(
+    body: MediaQuery.removePadding(
+        removeTop: true,
+        context: context,
+        child: AppRefreshView(
+          enablePullUp: false,
+          pageController: Get.find<MineController>(),
+          child: ListView(
+            children: mineList,
+          ),
+        )),
+  );
 }
 
 ListTile mineListTitle(Map m) {
@@ -138,88 +123,126 @@ Stack mineBarStack() {
     Positioned(
       top: 47.h + ScreenUtil().statusBarHeight,
       width: 1.sw,
-      child: Row(
-        // direction: Axis.horizontal,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-              margin: EdgeInsets.only(left: 12.w),
-              width: 66.r,
-              height: 66.r,
-              child: Image.asset('assets/icons/morentouxiang.png')),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 5.w),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Text(
-                        '设计师',
-                        style:
-                            SeaFont.s16BoldFontTextStyle(color: Colors.white),
-                        maxLines: 1,
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
-                        child: Text(
-                          'ID123456',
-                          style: SeaFont.s12FontTextStyle(color: Colors.white),
-                          maxLines: 1,
+      child: GetBuilder<MineController>(
+        id: 'myUserInfo',
+        builder: (_) {
+          return Row(
+            // direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              userIcon(_),
+              Expanded(
+                child: Get.find<StorageService>().isLogin == false
+                    ? GestureDetector(
+                        onTap: () {
+                          Get.toNamed(Routes.login);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '登录/注册',
+                            style: SeaFont.s15BoldFontTextStyle(
+                                color: Colors.white),
+                          ),
                         ),
                       )
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      SizedBox(
-                          width: 19.r,
-                          height: 19.r,
-                          child: Image.asset('assets/icons/qiandao.png')),
-                      Container(
-                          decoration: const BoxDecoration(
-                            color: Color.fromRGBO(203, 156, 37, 0.5),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(16 / 2)),
-                          ),
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 2, bottom: 2),
-                          margin: EdgeInsets.only(left: 15.w, right: 15.w),
-                          child: Text(
-                            '签到酒滴:20',
-                            style:
-                                SeaFont.s12FontTextStyle(color: Colors.white),
-                          )),
-                      Container(
-                          decoration: const BoxDecoration(
-                            color: Color.fromRGBO(203, 156, 37, 0.5),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(16 / 2)),
-                          ),
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 2, bottom: 2),
-                          child: Text(
-                            '已换Bcc:20',
-                            style:
-                                SeaFont.s12FontTextStyle(color: Colors.white),
-                          )),
-                    ],
-                  )
-                ],
+                    : userMsg(_),
               ),
-            ),
-          ),
-          Container(
-              margin: EdgeInsets.only(right: 12.w),
-              width: 30.r,
-              height: 30.r,
-              child: Image.asset('assets/icons/fenxiang.png'))
-        ],
+              shareIcon()
+            ],
+          );
+        },
       ),
     )
   ]);
+}
+
+Container shareIcon() {
+  return Container(
+      margin: EdgeInsets.only(right: 12.w),
+      width: 30.r,
+      height: 30.r,
+      child: Get.find<StorageService>().isLogin == false
+          ? null
+          : Image.asset('assets/icons/fenxiang.png'));
+}
+
+Padding userMsg(MineController _) {
+  return Padding(
+    padding: EdgeInsets.only(left: 5.w),
+    child: Column(
+      children: <Widget>[
+        Row(
+          children: [
+            Text(
+              _.userInfoModel?.nickname ?? '',
+              style: SeaFont.s16BoldFontTextStyle(color: Colors.white),
+              maxLines: 1,
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+              child: Text(
+                'ID${_.userInfoModel?.id ?? ''}',
+                style: SeaFont.s12FontTextStyle(color: Colors.white),
+                maxLines: 1,
+              ),
+            )
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            SizedBox(
+                width: 19.r,
+                height: 19.r,
+                child: Image.asset('assets/icons/qiandao.png')),
+            Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(203, 156, 37, 0.5),
+                  borderRadius: BorderRadius.all(Radius.circular(16 / 2)),
+                ),
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, top: 2, bottom: 2),
+                margin: EdgeInsets.only(left: 15.w, right: 15.w),
+                child: Text(
+                  '签到酒滴:${_.userInfoModel?.jiuValue() ?? ''}',
+                  style: SeaFont.s12FontTextStyle(color: Colors.white),
+                )),
+            Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(203, 156, 37, 0.5),
+                  borderRadius: BorderRadius.all(Radius.circular(16 / 2)),
+                ),
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, top: 2, bottom: 2),
+                child: Text(
+                  '已换BCC:${_.userInfoModel?.bccValue() ?? ''}',
+                  maxLines: 1,
+                  style: SeaFont.s12FontTextStyle(color: Colors.white),
+                )),
+          ],
+        )
+      ],
+    ),
+  );
+}
+
+Container userIcon(MineController _) {
+  return Container(
+      margin: EdgeInsets.only(left: 12.w),
+      child: _.userInfoModel == null || _.userInfoModel!.avatar!.isEmpty
+          ? Container(
+              margin: EdgeInsets.only(right: 12.w),
+              width: 66.r,
+              height: 66.r,
+              child: Image.asset('assets/icons/morentouxiang.png'))
+          : AppNetworkImage(
+              imageUrl: _.userInfoModel!.avatar!,
+              width: 66.r,
+              height: 66.r,
+              radius: 33.r,
+            ));
 }

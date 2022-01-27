@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_text_util.dart';
 
 class MarketLineChart extends StatefulWidget {
   final List<dynamic> lineDataList;

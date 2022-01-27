@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_soon/app/data/util/public_service.dart';
-import 'package:flutter_soon/app/data/util/storage_service.dart';
-import 'package:flutter_soon/app/translations/app_translations.dart';
+import 'package:flutter_cejiu/app/data/util/public_service.dart';
+import 'package:flutter_cejiu/app/data/util/storage_service.dart';
+import 'package:flutter_cejiu/app/translations/app_translations.dart';
 import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 

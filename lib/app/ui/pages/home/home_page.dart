@@ -2,14 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/controller/home/home_controller.dart';
-import 'package:flutter_soon/app/data/model/api_dict_model.dart';
-import 'package:flutter_soon/app/data/util/public_service.dart';
-import 'package:flutter_soon/app/ui/pages/a_common/app_smart_refresher.dart';
-import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
-import 'package:flutter_soon/app/ui/pages/home/home_menu.dart';
-import 'package:flutter_soon/app/ui/pages/home/home_shoping_view.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
+import 'package:flutter_cejiu/app/controller/home/home_controller.dart';
+import 'package:flutter_cejiu/app/data/model/api_dict_model.dart';
+import 'package:flutter_cejiu/app/data/util/public_service.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/app_smart_refresher.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/network_image_view.dart';
+import 'package:flutter_cejiu/app/ui/pages/home/home_menu.dart';
+import 'package:flutter_cejiu/app/ui/pages/home/home_shoping_view.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
 
@@ -84,8 +84,8 @@ class HomeView extends GetView<HomeController> {
                   pageController: homeController,
                   child: buildHomeListView(menuList),
                 ),
-            onLoading: homeController.loadingView,
-            onError: (error) => homeController.netWorkView));
+            onLoading: homeController.loadingView(),
+            onError: (error) => homeController.netWorkView()));
   }
 }
 
@@ -123,7 +123,8 @@ GetBuilder<HomeController> buildGridView() {
           (BuildContext context, int index) {
             return OrderView(index, type: _.type, model: _.listDataArray[index],
                 tapCall: () {
-              Get.find<HomeController>().pushShopingDetail(index.toString());
+              Get.find<HomeController>()
+                  .pushShopingDetail(_.listDataArray[index].id.toString());
             });
           },
           childCount: _.listDataArray.length,

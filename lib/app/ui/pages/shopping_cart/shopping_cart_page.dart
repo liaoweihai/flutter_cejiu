@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/controller/shopping_cart/shoping_cart_controller.dart';
-import 'package:flutter_soon/app/data/model/shoping_cart_model.dart';
-import 'package:flutter_soon/app/ui/pages/a_common/app_smart_refresher.dart';
-import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
-import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
+import 'package:flutter_cejiu/app/controller/shopping_cart/shoping_cart_controller.dart';
+import 'package:flutter_cejiu/app/data/model/shoping_cart_model.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/app_smart_refresher.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/network_image_view.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
 
 class ShopingCart extends StatefulWidget {
@@ -141,8 +141,8 @@ class ShopingCartView extends GetView<ShopingCartController> {
           );
         },
       )),
-      onLoading: Get.find<ShopingCartController>().loadingView,
-      onError: (string) => Get.find<ShopingCartController>().netWorkView,
+      onLoading: Get.find<ShopingCartController>().loadingView(),
+      onError: (string) => Get.find<ShopingCartController>().netWorkView(),
     );
   }
 

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/controller/base/base_refresh_controller.dart';
-import 'package:flutter_soon/app/ui/pages/a_common/app_loading.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
-import 'package:flutter_soon/app/ui/theme/app_text_util.dart';
+import 'package:flutter_cejiu/app/controller/base/base_refresh_controller.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/app_loading.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_text_util.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AppRefreshView extends StatelessWidget {

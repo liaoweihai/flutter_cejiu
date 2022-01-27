@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter_soon/app/data/provider/api.dart';
-import 'package:flutter_soon/app/data/provider/api_response.dart';
-import 'package:flutter_soon/app/data/provider/http_request.dart';
-import 'package:flutter_soon/app/data/util/storage_service.dart';
-import 'package:flutter_soon/app/routes/app_pages.dart';
+import 'package:flutter_cejiu/app/data/provider/api.dart';
+import 'package:flutter_cejiu/app/data/provider/api_response.dart';
+import 'package:flutter_cejiu/app/data/provider/http_request.dart';
+import 'package:flutter_cejiu/app/data/util/storage_service.dart';
+import 'package:flutter_cejiu/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

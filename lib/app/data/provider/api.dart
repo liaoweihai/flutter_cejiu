@@ -1,4 +1,4 @@
-import 'package:flutter_soon/app/data/provider/http_request.dart';
+import 'package:flutter_cejiu/app/data/provider/http_request.dart';
 
 class AppApiClient {
   /// static _instance，_instance会在编译期被初始化，保证了只被创建一次
@@ -202,22 +202,23 @@ class AppApiClient {
 
   ///团购详情（含分享详情）
   ///现金商城
+  ///商品列表
   Future getGoodsList({Map<String, dynamic>? paramas}) =>
       ApiRequest().getRequest('/goods', params: paramas);
 
-  ///商品列表
+  ///首页 (轮播图 )
   Future getIndex({Map<String, dynamic>? paramas}) =>
       ApiRequest().getRequest('/index', params: paramas);
 
-  ///首页 (轮播图 )
+  ///获取通用字典
   Future getDict({Map<String, dynamic>? paramas}) =>
       ApiRequest().getRequest('/dict', params: paramas);
 
-  ///获取通用字典
+  ///商品详情
   Future getGoodsDetail(String id, {Map<String, dynamic>? paramas}) =>
       ApiRequest().getRequest('/goods/' + id, params: paramas);
 
-  ///商品详情
+  ///获取地址列表
   Future getUserAddress({Map<String, dynamic>? paramas}) =>
       ApiRequest().getRequest('/user/address', params: paramas);
 

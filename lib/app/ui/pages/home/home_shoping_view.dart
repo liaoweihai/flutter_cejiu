@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_soon/app/data/model/home_goods_model.dart';
-import 'package:flutter_soon/app/ui/pages/a_common/network_image_view.dart';
-import 'package:flutter_soon/app/ui/theme/app_colors_util.dart';
+import 'package:flutter_cejiu/app/data/model/home_goods_model.dart';
+import 'package:flutter_cejiu/app/ui/pages/a_common/network_image_view.dart';
+import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
 
 class OrderView extends StatelessWidget {
   final int idx;

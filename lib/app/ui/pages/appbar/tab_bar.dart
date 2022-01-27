@@ -4,7 +4,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_soon/app/controller/tabbar/tabbar_controller.dart';
+import 'package:flutter_cejiu/app/controller/tabbar/tabbar_controller.dart';
 
 import 'package:get/get.dart';
 
