@@ -36,7 +36,7 @@ class TabBarController extends GetxController {
   final widgetOptions = <Widget>[
     const HomePage(),
     const MarketPage(),
-    const ShopingCart(),
+    const ShopingCartPage(),
     const MinePage()
   ];
 

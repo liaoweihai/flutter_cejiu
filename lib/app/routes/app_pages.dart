@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_cejiu/app/controller/home/shoping_deatil_controller.dart';
 import 'package:flutter_cejiu/app/controller/login&reigst/login_regist_controller.dart';
 import 'package:flutter_cejiu/app/controller/tabbar/tabbar_controller.dart';
@@ -39,7 +42,8 @@ class AppPages {
         page: () => const ShopingDetailPage(),
         binding: BindingsBuilder(() => {
               Get.lazyPut<ShopingDetailController>(
-                  () => ShopingDetailController())
+                  () => ShopingDetailController(),
+                  tag: '22')
             })),
   ];
 }

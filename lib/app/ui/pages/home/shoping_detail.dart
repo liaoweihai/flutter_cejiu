@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_cejiu/app/controller/shopping_cart/shoping_cart_controller.dart';
+import 'package:flutter_cejiu/app/controller/tabbar/tabbar_controller.dart';
+import 'package:flutter_cejiu/app/routes/app_pages.dart';
 import 'package:flutter_cejiu/app/ui/pages/a_common/app_smart_refresher.dart';
 import 'package:flutter_cejiu/app/ui/pages/a_common/network_image_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,10 +12,14 @@ import 'package:flutter_cejiu/app/ui/theme/app_text_util.dart';
 import 'package:get/get.dart';
 
 class ShopingDetailPage extends GetView<ShopingDetailController> {
-  const ShopingDetailPage({Key? key}) : super(key: key);
+  final String? pageTag;
+  const ShopingDetailPage({this.pageTag, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ShopingDetailController controller = Get.put<ShopingDetailController>(
+        ShopingDetailController(),
+        tag: pageTag);
     return controller.obx(
         (state) => Scaffold(
               backgroundColor: Colors.white,
@@ -42,7 +49,7 @@ class ShopingDetailPage extends GetView<ShopingDetailController> {
                         ),
                       ),
                     ),
-                    shopingDetailInfo(),
+                    shopingDetailInfo(pageTag: pageTag),
                     addressRuleSelectionView(),
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
@@ -60,7 +67,6 @@ class ShopingDetailPage extends GetView<ShopingDetailController> {
               ),
             ),
         onLoading: controller.loadingView(), onError: (error) {
-      print('hfajshjhfgajsh====我错误了===$error');
       return error == null
           ? controller.netWorkView(ifScaffold: true)
           : controller.loadErrorView(errorMsg: error, ifScaffold: true);
@@ -126,8 +132,9 @@ Widget addressRuleSelectionView() {
   ));
 }
 
-Widget shopingDetailInfo() {
-  ShopingDetailController controller = Get.find<ShopingDetailController>();
+Widget shopingDetailInfo({String? pageTag}) {
+  ShopingDetailController controller =
+      Get.find<ShopingDetailController>(tag: pageTag);
 
   return SliverToBoxAdapter(
     child: Padding(
@@ -176,33 +183,56 @@ SafeArea bottomNavBar() {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Icon(
-                Icons.store,
-                color: Colors.grey,
-                size: 20,
-              ),
-              Text(
-                '商城',
-                style: SeaFont.s12FontTextStyle(),
-              )
-            ],
+          GestureDetector(
+            onTap: () {
+              print('object去商场详情');
+              // Get.toNamed(Routes.shopingDetail,
+              //     arguments: '111', preventDuplicates: false);
+
+              // Get.to(
+              //     ShopingDetailPage(
+              //       pageTag: '108',
+              //     ),
+              //     arguments: '108',
+              //     preventDuplicates: false);
+              // Get.close(0);
+              // Get.find<TabBarController>().tabCurrentIndex = 0;
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Icon(
+                  Icons.store,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+                Text(
+                  '商城',
+                  style: SeaFont.s12FontTextStyle(),
+                )
+              ],
+            ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Icon(
-                Icons.shopping_cart,
-                color: Colors.grey,
-                size: 20,
-              ),
-              Text(
-                '购物车',
-                style: SeaFont.s12FontTextStyle(),
-              )
-            ],
+          GestureDetector(
+            onTap: () {
+              Get.back();
+              // Get.close(2);
+              Get.find<TabBarController>().tabCurrentIndex = 2;
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Icon(
+                  Icons.shopping_cart,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+                Text(
+                  '购物车',
+                  style: SeaFont.s12FontTextStyle(),
+                )
+              ],
+            ),
           ),
           OutlinedButton(
             onPressed: () {},
