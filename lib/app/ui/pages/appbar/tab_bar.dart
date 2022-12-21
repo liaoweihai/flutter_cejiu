@@ -20,15 +20,17 @@ class TabBarPage extends GetView<TabBarController> {
       print('tabbar build  了饿了乐乐乐');
     }
 
-    ///适配工具初始化
-    ScreenUtil.init(
-        BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height),
-        context: context,
-        designSize: const Size(375, 957),
-        minTextAdapt: true,
-        orientation: Orientation.portrait);
+    // ///适配工具初始化
+    // ScreenUtil.init(
+    //     BoxConstraints(
+    //         maxWidth: MediaQuery.of(context).size.width,
+    //         maxHeight: MediaQuery.of(context).size.height),
+    //     context: context,
+    //     designSize: const Size(375, 957),
+    //     minTextAdapt: true,
+    //     orientation: Orientation.portrait);
+
+    ScreenUtil.init(context, designSize: const Size(375, 957));
 
     return Scaffold(
       body: PageView.builder(

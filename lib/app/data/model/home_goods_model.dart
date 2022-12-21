@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class HomeGoodsModel {
   int? id;
   List<dynamic>? image;
@@ -8,6 +10,9 @@ class HomeGoodsModel {
   String? bcc;
   String? cv;
   String? groupCv;
+  double? left;
+  double? right;
+  int suffix = Random().nextInt(29);
 
   HomeGoodsModel({
     this.id,
@@ -19,6 +24,8 @@ class HomeGoodsModel {
     this.bcc,
     this.cv,
     this.groupCv,
+    this.left = 0,
+    this.right = 0,
   });
 
   factory HomeGoodsModel.fromJson(Map<String, dynamic> json) {

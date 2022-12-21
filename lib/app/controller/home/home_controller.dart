@@ -54,7 +54,7 @@ class HomeController extends BaseRefreshController {
       total = response.modelMap!['total'];
       List list = response.modelMap!['rs'];
       listDataArray.addAll(list.map((e) => HomeGoodsModel.fromJson(e)));
-      update(['goods']);
+      // update(['goods']);
     }
     setRefreshState();
   }

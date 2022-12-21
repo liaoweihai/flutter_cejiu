@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cejiu/app/data/util/public_service.dart';
 import 'package:flutter_cejiu/app/data/util/storage_service.dart';
 import 'package:flutter_cejiu/app/translations/app_translations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
     if (kDebugMode) {
       print('app == BuildContext');
     }
@@ -58,6 +60,8 @@ class Global {
     PublicService publicService =
         await Get.putAsync(() => PublicService().init());
     await publicService.updateApiDic();
+
+    await ScreenUtil.ensureScreenSize();
 
     callback();
     if (Platform.isAndroid) {

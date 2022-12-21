@@ -101,19 +101,21 @@ class _LineChartSample2State extends State<MarketLineChart> {
       ),
       titlesData: FlTitlesData(
         show: true,
-        rightTitles: SideTitles(showTitles: false),
-        topTitles: SideTitles(showTitles: false),
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 22,
-          interval: 1,
-          getTextStyles: (context, value) =>
-              const TextStyle(color: Color(0xff68737d), fontSize: 12),
-          getTitles: (value) {
-            return lineList[value.toInt() - 1]['key'];
-          },
-          margin: 8,
-        ),
+        // topTitles: AxisTitles(sideTitles: SideTitles(sideTitles: false)),
+        // rightTitles: AxisTitles(sideTitles: SideTitles(sideTitles: false)),
+        // bottomTitles: AxisTitles(sideTitles: SideTitles({
+
+        // }
+
+        // reservedSize: 22,
+        // interval: 1,
+        // getTextStyles: (context, value) =>
+        //     const TextStyle(color: Color(0xff68737d), fontSize: 12),
+        // getTitles: (value) {
+        //   return lineList[value.toInt() - 1]['key'];
+        // },
+        // margin: 8,
+        // )),
         // leftTitles: SideTitles(
         //   showTitles: true,
         //   interval: 1,
@@ -140,7 +142,7 @@ class _LineChartSample2State extends State<MarketLineChart> {
         LineChartBarData(
           spots: spots,
           isCurved: false,
-          colors: gradientColors,
+          color: Color.fromRGBO(255, 182, 0, 1),
           barWidth: 3.r,
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -148,8 +150,7 @@ class _LineChartSample2State extends State<MarketLineChart> {
           ),
           belowBarData: BarAreaData(
             show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            color: Color.fromRGBO(255, 182, 0, 0.3),
           ),
         ),
       ],

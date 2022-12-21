@@ -150,29 +150,29 @@ class _TimerButtonState extends State<TimerButton> {
       case ButtonType.RaisedButton:
         //TODO: (Ajay) Remove deprecated members
         // ignore: deprecated_member_use
-        return RaisedButton(
-          disabledColor: widget.disabledColor,
-          color: timeUpFlag ? widget.color : widget.disabledColor,
+        return TextButton(
+          // disabledColor: widget.disabledColor,
+          // color: timeUpFlag ? widget.color : widget.disabledColor,
           onPressed: _onPressed,
           child: _buildChild(),
         );
       //FlatButton is deprecated, use TextButton instead
       case ButtonType.FlatButton:
         // ignore: deprecated_member_use
-        return FlatButton(
-          color: timeUpFlag ? widget.color : widget.disabledColor,
-          disabledColor: widget.disabledColor,
+        return TextButton(
+          // color: timeUpFlag ? widget.color : widget.disabledColor,
+          // disabledColor: widget.disabledColor,
           onPressed: _onPressed,
           child: _buildChild(),
         );
       //OutlineButton is deprecated, use OutlinedButton instead
       case ButtonType.OutlineButton:
         // ignore: deprecated_member_use
-        return OutlineButton(
-          borderSide: BorderSide(
-            color: timeUpFlag ? widget.color : widget.disabledColor,
-          ),
-          disabledBorderColor: widget.disabledColor,
+        return TextButton(
+          // borderSide: BorderSide(
+          //   color: timeUpFlag ? widget.color : widget.disabledColor,
+          // ),
+          // disabledBorderColor: widget.disabledColor,
           onPressed: _onPressed,
           child: _buildChild(),
         );

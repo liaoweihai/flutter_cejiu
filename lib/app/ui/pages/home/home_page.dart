@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +14,7 @@ import 'package:flutter_cejiu/app/ui/pages/home/home_shoping_view.dart';
 import 'package:flutter_cejiu/app/ui/theme/app_colors_util.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -76,53 +79,61 @@ class HomeView extends GetView<HomeController> {
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           backgroundColor: Colors.white,
           elevation: 0, //隐藏底部阴影分割线
-          title: const HomeBar(),
+          title: homeBarView(),
         ),
         backgroundColor: ColorsUtil.hexColor('#f5f5f5'),
         body: homeController.obx(
             (state) => AppRefreshView(
                   pageController: homeController,
-                  child: buildHomeListView(menuList),
+                  child: buildHomeContentView(menuList),
                 ),
             onLoading: homeController.loadingView(),
             onError: (error) => homeController.netWorkView()));
   }
 }
 
-CustomScrollView buildHomeListView(List<Widget> menuList) {
-  print('我攒机了2222222');
+CustomScrollView buildHomeContentView(List<Widget> menuList) {
   return CustomScrollView(
     slivers: <Widget>[
-      SliverToBoxAdapter(
-          child: Column(children: <Widget>[
-        SizedBox(height: 220.h, child: buildSwiper()),
-        Container(
-          margin: const EdgeInsets.only(top: 12, bottom: 12),
-          padding: const EdgeInsets.only(right: 12, left: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: menuList,
-          ),
-        )
-      ])),
-      buildGridView(),
+      SliverToBoxAdapter(child: homeSwiper()),
+      SliverToBoxAdapter(child: homeCenterMenu(menuList)),
+      homeGridView()
     ],
   );
 }
 
-GetBuilder<HomeController> buildGridView() {
+SizedBox homeSwiper() => SizedBox(height: 220.h, child: buildSwiper());
+
+Container homeCenterMenu(List<Widget> menuList) {
+  return Container(
+    // margin: const EdgeInsets.only(top: 12, bottom: 12),
+    padding: EdgeInsets.all(12.w),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      // verticalDirection: VerticalDirection.down,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: menuList,
+    ),
+  );
+}
+
+GetBuilder<HomeController> homeGridView() {
   return GetBuilder<HomeController>(
     id: 'goods',
     builder: (_) {
-      return SliverGrid(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      return SliverPadding(
+        padding: const EdgeInsets.only(left: 12, right: 12),
+        sliver: SliverMasonryGrid.count(
           crossAxisCount: 2,
-          childAspectRatio: _.type == 1 ? 169 / 282 : 169 / 260,
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return OrderView(index, type: _.type, model: _.listDataArray[index],
-                tapCall: () {
+          // padding: EdgeInsets.all(12.w),
+          mainAxisSpacing: 12.w,
+          crossAxisSpacing: 12.w,
+          itemBuilder: (context, index) {
+            return OrderView(
+                // key: ObjectKey(_.listDataArray[index]),
+                index,
+                type: _.type,
+                model: _.listDataArray[index], tapCall: () {
               Get.find<HomeController>()
                   .pushShopingDetail(_.listDataArray[index].id.toString());
             });
@@ -141,11 +152,19 @@ GetBuilder<HomeController> buildSwiper() {
       return Swiper(
         key: UniqueKey(),
         itemBuilder: (BuildContext context, int index) {
-          ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
-          String imagePrefix = apiDict?.imagePrefix ?? '';
-          Map swiper = _.swipers[index];
-          return AppNetworkImage(
-            imageUrl: imagePrefix + swiper['image'],
+          // ApiDictModel? apiDict = Get.find<PublicService>().apiDict;
+          // String imagePrefix = apiDict?.imagePrefix ?? '';
+          // Map swiper = _.swipers[index];
+          // return AppNetworkImage(
+          //   imageUrl: imagePrefix + swiper['image'],
+          // );
+          return SizedBox(
+            width: 1.sw,
+            // height: 200,
+            child: Image.asset(
+              'assets/images/lbt.png',
+              fit: BoxFit.fitWidth,
+            ),
           );
         },
         itemCount: _.swipers.length,
@@ -155,38 +174,28 @@ GetBuilder<HomeController> buildSwiper() {
   );
 }
 
-class HomeBar extends StatelessWidget {
-  const HomeBar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          // margin: EdgeInsets.only(top: 40),
-          padding:
-              const EdgeInsets.only(top: 0, bottom: 10, left: 15, right: 15),
-          child: Container(
-            height: 35.0,
-            decoration: BoxDecoration(
-                color: ColorsUtil.hexColor('#F2F2F2'),
-                // border: Border.all(width: 1, color: Colors.red),
-                borderRadius: const BorderRadius.all(Radius.circular(15))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.search,
-                  color: ColorsUtil.hexColor('#999999'),
-                ),
-                Text('搜索',
-                    style: TextStyle(
-                        fontSize: 12, color: ColorsUtil.hexColor('#999999'))),
-              ],
-            ),
+Container homeBarView() {
+  return Container(
+    // margin: EdgeInsets.only(top: 40),
+    padding: const EdgeInsets.only(top: 0, bottom: 10, left: 15, right: 15),
+    child: Container(
+      height: 35.0,
+      decoration: BoxDecoration(
+          color: ColorsUtil.hexColor('#F2F2F2'),
+          // border: Border.all(width: 1, color: Colors.red),
+          borderRadius: const BorderRadius.all(Radius.circular(15))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.search,
+            color: ColorsUtil.hexColor('#999999'),
           ),
-        ),
-      ],
-    );
-  }
+          Text('搜索',
+              style: TextStyle(
+                  fontSize: 12, color: ColorsUtil.hexColor('#999999'))),
+        ],
+      ),
+    ),
+  );
 }

@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +16,9 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
 // import 'package:connectivity_plus/connectivity_plus.dart';
-
+// http://localhost:4500
 const apiBaseUrl = 'http://cejiu-api-test.fjlssy.cn/';
+// const apiBaseUrl = 'http://localhost:58451/';
 //测试http://cejiu-api-test.fjlssy.cn 正式http://cejiu-api.fjlssy.cn
 const secret = 'CJ!%37S1'; //测试CJ!%37S1 正式UJ!%3%DN
 
@@ -76,6 +79,29 @@ class ApiRequest {
     //     ),
     //   ),
     // );
+
+    ///设置代理 支持Charles抓包
+    // (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    //     (client) {
+    //   // config the http client
+    //   //设置该客户端的代理为指定的 ip:端口
+    //   client.findProxy = (uri) {
+    //     // 不设置代理
+    //     // return 'DIRECT';
+    //     //设置代理
+    //     return "PROXY localhost:8888";
+    //     //设置多个代理
+    //     // return "PROXY localhost:8888;PROXY localhost:7777";
+    //     // 设置代理与未设置代理均支持  ‘DIRECT’一定要放在最后
+    //     // return "PROXY localhost:8888;DIRECT;";
+    //   };
+
+    //   ///解决安卓https抓包问题
+    //   client.badCertificateCallback =
+    //       (X509Certificate cert, String host, int port) => true;
+    //   // you can also create a HttpClient to dio
+    //   // return HttpClient();
+    // };
 
     if (kDebugMode) {
       _dio.interceptors.add(LogInterceptor(responseBody: false)); //开启请求日志

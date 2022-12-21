@@ -59,10 +59,13 @@ class AppRefreshView extends StatelessWidget {
               textAlign: TextAlign.center,
             );
           } else {
-            body = Text(
-              "-- 没有更多数据了 --",
-              style: SeaFont.s14FontTextStyle(),
-              textAlign: TextAlign.center,
+            body = Padding(
+              padding: const EdgeInsets.only(top: 18.0),
+              child: Text(
+                "-- 没有更多数据了 --",
+                style: SeaFont.s14FontTextStyle(),
+                textAlign: TextAlign.center,
+              ),
             );
           }
           return SizedBox(

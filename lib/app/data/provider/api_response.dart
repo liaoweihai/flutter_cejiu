@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'dart:ffi';
+// import 'dart:ffi';
 
 class ApiError {
   final Object? error;

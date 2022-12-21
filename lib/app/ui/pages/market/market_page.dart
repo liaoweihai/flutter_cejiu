@@ -95,9 +95,9 @@ Widget marketContentView() {
             },
           ),
         ),
-        // SliverToBoxAdapter(
-        //   child: marketOrderHeadView(),
-        // ),
+        SliverToBoxAdapter(
+          child: marketOrderHeadView(),
+        ),
         GetBuilder<MarketController>(
           id: 'buyOrderList',
           builder: (_) {

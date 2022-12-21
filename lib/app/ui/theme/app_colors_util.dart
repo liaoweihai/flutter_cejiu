@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ColorsUtil {
@@ -29,4 +31,9 @@ class ColorsUtil {
 
   static Color mainColor = const Color.fromRGBO(255, 183, 2, 1);
   static Color navBGColor = Colors.white;
+
+  static Color randomColor() {
+    return Color.fromRGBO(
+        Random().nextInt(256), Random().nextInt(256), Random().nextInt(256), 1);
+  }
 }

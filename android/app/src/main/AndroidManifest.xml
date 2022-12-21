@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.soon.sea.flutter_soon">
+    package="com.example.flutter_cejiu">
    <application
-        android:label="flutter_soon"
+        android:label="flutter_cejiu"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

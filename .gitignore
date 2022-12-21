@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+.vscode
+migrate_working_dir/
 
 # IntelliJ related
 *.iml
@@ -31,9 +33,6 @@
 .pub/
 /build/
 
-# Web related
-lib/generated_plugin_registrant.dart
-
 # Symbolication related
 app.*.symbols
 
@@ -44,7 +43,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# "JSON to Dart Model" generator tracker files locations.
-/.json_models/
-models.jsonc

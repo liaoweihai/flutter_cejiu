@@ -63,7 +63,7 @@ class MarketController extends BaseRefreshController {
     ApiResponse response = await AppApiClient().marketAssets();
     if (response.status == ApiStatus.apiSuccess) {
       assetsModel = UserAssetsModel.fromJson(response.modelMap!);
-      // update(['assets']);
+      update(['assets']);
     }
     return response;
   }
@@ -73,7 +73,7 @@ class MarketController extends BaseRefreshController {
     if (response.status == ApiStatus.apiSuccess) {
       marketDailyPriceModel =
           MarketDailyPriceModel.fromJson(response.modelMap!);
-      // update(['dailyPrice']);
+      update(['dailyPrice']);
     }
     change('', status: RxStatus.success());
 
